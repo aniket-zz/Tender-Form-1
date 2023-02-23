@@ -110,16 +110,15 @@ const UploadForm = (props) => {
                 console.log(doc);
                 formData.append("PAN", doc);
                 try{
-               let res = await axios.post("https://reqres.in/api/users", formData, {     // API of the service used to upload the document
+                  let uploadURLRes = await axios.get('http://localhost:5000/getuploadurl');
+                  let res = await axios.post(uploadURLRes.message, formData, {     // API of the service used to upload the document
                   headers: {                                                            
                     "Content-Type": "multipart/form-data",
                   },
-                });
-                onSuccess(message.success(`${info.file.name} file uploaded successfully`));
+                  });
+                  await axios.post('http://localhost:5000/uploaddetails',res)
 
-                console.log("server response: ", res); // Response received from the service used
-                                                       // catch the URL from the response and send it to the backend to store in the db
-                                                       // From there doc url can be sent to the NLP code
+                onSuccess(message.success(`${info.file.name} file uploaded successfully`));
                 }catch(err){
                   console.log("Eroor: ", err);
                   onError(`${info.file.name} file upload failed.`);
