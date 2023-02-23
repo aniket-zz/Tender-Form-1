@@ -20,7 +20,7 @@ const SubmitPage = (props) => {
   return (
     <div>
       <h3>Registered successfully!</h3>
-      <p className="details_div"></p>
+      <p className="details_div">User Entered details and the details extracted from the user's documents will be shown here after complete implementation of the NLP.</p>
       <div className="login_div">
         <Form
           onSubmit={(e) => handleSubmit(e)}
