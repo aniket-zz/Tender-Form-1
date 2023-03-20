@@ -1,38 +1,36 @@
-// import { useCallback } from "react";
+// import { useState } from "react";
 import { Button, Form, Input } from "antd";
 import {  useNavigate, } from "react-router-dom";
 import handleSubmit from "../../controllers/handleSubmit";
 
 
 
-const url = "https://reqres.in/api/users";
+// const url = "http://localhost:5000/register";  // Backend endpoint earlier used
+
+const url = "https://reqres.in/api/users"; // API endpoint to be entered here
 
 
 const LoginForm = (props) => {
+
   const navigate = useNavigate();
 
 
   const onFinish = async (values) => {
-    // console.log("success: ", values);
-    const response = await handleSubmit(values, url)     //user is set from undefined to a value
-    console.log('userType_vlaue', response);
-    props.setUser(response.response.id);
-    console.log('userType_vlaue', props.user);
-    await props.user? navigate('/Details'): navigate('/Details')
-    // if (props.user) {
-    //   navigate('/details')
-    // }
-    // else {
-    //   navigate('/login')
-    // }
+
+    const response = await handleSubmit(values, url);     
+    const message = response.response.id;   // Response ("success message") from backend is to be set here
+
+    props.setUser(message);               //user is set from undefined to a value
+    console.log('message --->', message);
+    console.log('User --->', props.user);
+
+    message ? navigate('/Details'): navigate('/')  // If user is successfully registered then naviagte to next page
   };
 
 
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
-
-
 
 
   return (
@@ -109,24 +107,13 @@ const LoginForm = (props) => {
             <Input.Password />
           </Form.Item>
 
-          {/* <Form.Item
-      name="remember"
-      valuePropName="checked"
-      wrapperCol={{
-        offset: 8,
-        span: 16
-      }}
-    >
-      <Checkbox>Remember me</Checkbox>
-    </Form.Item> */}
-
           <Form.Item
             wrapperCol={{
               offset: 8,
               span: 16,
             }}
           >
-            <Button type="primary" htmlType="submit" >
+            <Button type="primary" htmlType="submit"  >
               Register
             </Button>
           </Form.Item>

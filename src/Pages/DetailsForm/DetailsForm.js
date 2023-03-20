@@ -50,7 +50,9 @@ const tailFormItemLayout = {
   },
 };
 
-const url = "https://localhost:5000/create";
+// const url = "http://localhost:5000/register";  // Backend endpoint earlier used
+
+const url = "https://reqres.in/api/users";  // API endpoint to be entered here
 
 const DetailsForm = (props) => {
   const navigate = useNavigate();
@@ -59,7 +61,7 @@ const DetailsForm = (props) => {
   
   const onFinish = async (values) => {
     console.log("success: ", values);
-    console.log('working', props.user);
+    console.log('User -->', props.user);
     await handleSubmit(values, url);
     if (props.user) {
       navigate('/upload')
@@ -68,10 +70,6 @@ const DetailsForm = (props) => {
       navigate('/details')
     }
   };
-
-  // const onFinish = (values) => {
-  //   console.log("Received values of form: ", values);
-  // };
 
 
   const prefixSelector = (
@@ -85,7 +83,7 @@ const DetailsForm = (props) => {
           const name = individual.code;
           const code = individual.dial_code;
           return (
-            <Option value={code}>
+            <Option value={code} key={code}>
               {" "}
               {name} ({code})
             </Option>

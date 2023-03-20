@@ -5,9 +5,6 @@ import { Button, Form } from "antd";
 import handleSubmit from "../../controllers/handleSubmit";
 
 
-
-// const url = "http://localhost:5000/";
-
 const SubmitPage = (props) => {
     const onFinish = async (values) => {
         console.log('Values', values);
