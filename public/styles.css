@@ -10,13 +10,20 @@ body {
     background-color: white;
 }
 
+#register, #basic, #Upload {
+    background-color: #f1f1f1;
+    position: relative;
+    left: 2.5rem;
+    padding: 10px;
+    border-radius: 5px;
+}
+
 /* ----- LoginForm main div applied styles --------- */
 .login_div {
     padding: 0px 0px 25px 0px;
     width: 40rem;
     margin: auto;
     position: relative;
-    background-color: white;
 }
 
 
@@ -26,35 +33,48 @@ body {
     width: 40rem;
     margin: auto;
     position: relative;
-    background-color: white;
 }
 
-/* ----Title of the tender in DetailsDForm page----- */
+/*------------ SubmitPage main div applied styles--------------*/
+.submit_div {
+    text-align: center;
+    padding: 0px 0px 25px 0px;
+    width: 45rem;
+    margin: auto;
+}
+
+
+
+/* ----Title in DetailsDForm page----- */
 .tender_title {
     font-size: 1rem;
-    font-family: verdana;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
     color: #0764BA;
     font-weight: bold;
+    padding: 10px 0px;
+}
+
+/*----------Title of Submit Page---------------*/
+.submit_title {
+    color: #000000;
     text-align: center;
-    padding-bottom: 10px;
+    background-color: #dcdcdc;
+    margin-top: -25px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
-/* .login_section {
-    margin: auto;
-    width: 30rem;
-    padding: 10px;
+/*-----------Upload Title------------------*/
+.upload_title {
+    font-weight: 600;
+    color: #0764BA;
+    padding-left: 2.5rem;
 }
-
-.uploading_section {
-    margin: auto;
-    width: 45rem;
-    padding: 20px;
-} */
 
 h3 {
     text-align: center;
-    padding: 10px 10px 10px 10px;
-    font-size: 2.5rem;
+    padding: 15px 10px;
     background-color: #bd5323;
     color: white;
     font-size: 1.5rem;
@@ -63,88 +83,8 @@ h3 {
 input,
 select,
 textarea {
-    font-family: verdana;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-size: 13px;
     color: #212121;
     border: 1px solid #C9C9C9;
 }
-
-/* td {
-    font-family: tahoma;
-    font-size: 11px;
-    color: #252525;
-} */
-
-/* span .mandatory {
-    color: red;
-} */
-
-/* .button_td {
-    text-align: center;
-} */
-
-/* .tender_title {
-    font-size: 1rem;
-    font-family: verdana;
-    color: #0764BA;
-    font-weight: bold;
-}
-
-.login_color {
-    background-color: #f1f1f1;
-}
-
-.td_column {
-    text-align: right;
-    width: 40%;
-    padding-left: 20px;
-}
-
-.upl_column {
-    text-align: left;
-    width: 50%;
-    padding-left: 5px;
-    padding: 5px;
-}
-
-.notes {
-    border-top: 1px dashed #DEDEDE;
-    border-bottom: 1px dashed #DEDEDE;
-    background-color: #f1f1f1;
-    color: #AD3737;
-    font-family: tahoma;
-    font-size: 11px;
-    padding: 2px;
-    padding-left: 8px;
-}
-
-.login_email {
-    border: 1px solid #a47c4c;
-    margin-left: 10px;
-}
-
-.login_password {
-    border: 1px solid #a47c4c;
-}
-
-.login_button {
-    border-radius: 12px;
-    border: 1px solid #dfb78a;
-    line-height: 0.5rem;
-    width: 4rem;
-    font-size: 12px;
-    background-image: linear-gradient(rgb(255, 191, 143), rgb(255, 253, 242));
-}
-
-.upload_heading {
-    font-size: 11px;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-    font-weight: 600;
-    padding: 5px;
-    padding-left: 5px;
-}
-
-.bordered {
-    border: 1px solid rgb(201, 201, 201);
-} */
-

@@ -1,10 +1,9 @@
-import { Button, Form, Input, Select, DatePicker, } from "antd";
+import { Button, Form, Input, Select, DatePicker } from "antd";
 import Phones from "./Phones";
-import { States, Years } from "./States"
+import { States, Years } from "./States";
 // import onSubmit from "../../controllers/submitController";
-import { useNavigate, } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import handleSubmit from "../../controllers/handleSubmit";
-
 
 const { Option } = Select;
 
@@ -52,25 +51,24 @@ const tailFormItemLayout = {
 
 // const url = "http://localhost:5000/register";  // Backend endpoint earlier used
 
-const url = "https://reqres.in/api/users";  // API endpoint to be entered here
+const url = "https://reqres.in/api/users"; // API endpoint to be entered here
 
 const DetailsForm = (props) => {
   const navigate = useNavigate();
-  
+
   const [form] = Form.useForm();
-  
+
   const onFinish = async (values) => {
     console.log("success: ", values);
-    console.log('User -->', props.user);
+    props.setFormValue(values);
+    console.log("User -->", props.user);
     await handleSubmit(values, url);
     if (props.user) {
-      navigate('/upload')
-    }
-    else {
-      navigate('/details')
+      navigate("/upload");
+    } else {
+      navigate("/");
     }
   };
-
 
   const prefixSelector = (
     <Form.Item name="prefix" noStyle>
@@ -79,11 +77,11 @@ const DetailsForm = (props) => {
           width: "6rem",
         }}
       >
-        {Phones.map((individual) => {
+        {Phones.map((individual, index) => {
           const name = individual.code;
           const code = individual.dial_code;
           return (
-            <Option value={code} key={code}>
+            <Option value={code} key={index}>
               {" "}
               {name} ({code})
             </Option>
@@ -93,24 +91,49 @@ const DetailsForm = (props) => {
     </Form.Item>
   );
 
-
-
-
-
   return (
     <div>
-      <h3>eTenders Portal (ISM)</h3>
+      <h3>
+        <img
+          style={{
+            height: "55px",
+            position: "relative",
+            right: "27%",
+            margin: "-5px -5px -10px -5px",
+          }}
+          alt="logo"
+          src="./ism logo.png"
+        ></img>
+        eTenders Portal (ISM)
+      </h3>
       <div className="details_div">
-        <p className="tender_title">Online Enrollment of Corporate/Bidder</p>
+        <p
+          className="tender_title"
+          style={{
+            textAlign: "left",
+            paddingLeft: "10px",
+            backgroundColor: "white",
+          }}
+        >
+          Online Enrollment of Corporate/Bidder
+        </p>
         <p
           style={{
             fontFamily: "verdana",
             fontWeight: "bold",
             fontSize: "13px",
-            padding: "5px 0px 10px 0px",
+            padding: "5px 0px 10px 50px",
             color: "#4f4f4f",
           }}
         >
+          <img
+            style={{
+              height: "15px",
+              marginRight: "5px",
+            }}
+            alt="Title_image"
+            src="./bullet1.png"
+          ></img>
           Corporate Tenderer Details
         </p>
 
@@ -128,6 +151,31 @@ const DetailsForm = (props) => {
           }}
           scrollToFirstError
         >
+          <Form.Item
+            name="TenderType"
+            label="Tender Type"
+            rules={[
+              {
+                required: true,
+                message: "Please select tender type",
+              },
+            ]}
+          >
+            <Select
+              placeholder="Tender type"
+              options={[
+                {
+                  label: "CIVIL",
+                  value: "CIVIL",
+                },
+                {
+                  label: "CMC",
+                  value: "CMC",
+                },
+              ]}
+            />
+          </Form.Item>
+
           <Form.Item
             name="companyName"
             label="Company Name / Licence Holder Name"
@@ -170,8 +218,8 @@ const DetailsForm = (props) => {
 
           <Form.Item
             name="NameOfPartners"
-            label="Name of Partners / Directors"
-            labelCol={{ span: "7", offset: "1" }}
+            label="Name of Partners/Directors"
+            labelCol={{ span: "8", offset: "0" }}
             rules={[
               {
                 required: true,
@@ -206,11 +254,11 @@ const DetailsForm = (props) => {
             ]}
           >
             <Select placeholder="select your state">
-              {States.map((each) => {
-                return (
-                  <option value={each.key} >{each.name}</option>
-                );
-              })}
+              {States.map((each, index) => (
+                <Option key={index} value={each.name}>
+                  {each.name}
+                </Option>
+              ))}
             </Select>
           </Form.Item>
 
@@ -252,11 +300,11 @@ const DetailsForm = (props) => {
             ]}
           >
             <Select placeholder="Establishment year">
-              {Years.map(each => {
-                return (
-                  <option value={each.key}>{each.year}</option>
-                )
-              })}
+              {Years.map((each, index) => (
+                <Option key={index} value={each.year}>
+                  {each.year}
+                </Option>
+              ))}
             </Select>
           </Form.Item>
 
@@ -283,13 +331,31 @@ const DetailsForm = (props) => {
               },
             ]}
           >
-            <Select placeholder="Legal Status">
-              <option value="1">Limited Company</option>
-              <option value="2">Undertaking</option>
-              <option value="3">Jointventure</option>
-              <option value="4">Partnership</option>
-              <option value="5">Others</option>
-            </Select>
+            <Select
+              placeholder="Legal Status"
+              options={[
+                {
+                  label: "Limited Company",
+                  value: "Limited Company",
+                },
+                {
+                  label: "Undertaking",
+                  value: "Undertaking",
+                },
+                {
+                  label: "Jointventure",
+                  value: "Jointventurey",
+                },
+                {
+                  label: "Partnership",
+                  value: "Partnership",
+                },
+                {
+                  label: "Others",
+                  value: "Others",
+                },
+              ]}
+            />
           </Form.Item>
 
           <Form.Item
@@ -302,15 +368,39 @@ const DetailsForm = (props) => {
               },
             ]}
           >
-            <Select placeholder="Company Category">
-              <option value="1">Micro Unit as per MSME</option>
-              <option value="2">Small Unit as per MSME</option>
-              <option value="3">Medium Unit as per MSME</option>
-              <option value="4">Ancillary Unit</option>
-              <option value="5">Project Affected Person of this Company</option>
-              <option value="6">SSI</option>
-              <option value="7">Others</option>
-            </Select>
+            <Select
+              placeholder="Company Category"
+              options={[
+                {
+                  label: "Micro Unit as per MSME",
+                  value: "Micro Unit as per MSME",
+                },
+                {
+                  label: "Small Unit as per MSME",
+                  value: "Small Unit as per MSME",
+                },
+                {
+                  label: "Medium Unit as per MSME",
+                  value: "Medium Unit as per MSME",
+                },
+                {
+                  label: "Ancillary Unit",
+                  value: "Ancillary Unit",
+                },
+                {
+                  label: "Project Affected Person of this Company",
+                  value: "Project Affected Person of this Company",
+                },
+                {
+                  label: "SSI",
+                  value: "SSI",
+                },
+                {
+                  label: "Others",
+                  value: "Others",
+                },
+              ]}
+            />
           </Form.Item>
 
           <p
@@ -318,10 +408,21 @@ const DetailsForm = (props) => {
               fontFamily: "verdana",
               fontWeight: "bold",
               fontSize: "13px",
-              padding: "20px 0px 10px 0px",
+              padding: "30px 10px 15px 10px",
               color: "#4f4f4f",
+              backgroundColor: "white",
+              margin: "10px -10px",
             }}
           >
+            <img
+            style={{
+              height: "15px",
+              marginRight: "5px",
+              marginLeft: "-5px"
+            }}
+            alt="Title_image"
+            src="./bullet1.png"
+          ></img>
             Contact Details{" "}
             <span>(Enter Company's Contact Person Details)</span>
           </p>
@@ -336,13 +437,31 @@ const DetailsForm = (props) => {
               },
             ]}
           >
-            <Select placeholder="title">
-              <option value="2">Mr</option>
-              <option value="3">Ms</option>
-              <option value="1">Mrs</option>
-              <option value="4">Dr</option>
-              <option value="5">Sri</option>
-            </Select>
+            <Select
+              placeholder="title"
+              options={[
+                {
+                  label: "Mr",
+                  value: "Mr",
+                },
+                {
+                  label: "Ms",
+                  value: "Ms",
+                },
+                {
+                  label: "Mrs",
+                  value: "Mrs",
+                },
+                {
+                  label: "Dr",
+                  value: "Dr",
+                },
+                {
+                  label: "Sri",
+                  value: "Sri",
+                },
+              ]}
+            />
           </Form.Item>
 
           <Form.Item
@@ -386,15 +505,11 @@ const DetailsForm = (props) => {
               },
             ]}
           >
-            <Input
-              addonBefore={prefixSelector}
-              maxLength={10}
-            />
+            <Input addonBefore={prefixSelector} maxLength={10} />
           </Form.Item>
 
-
           <Form.Item {...tailFormItemLayout} style={{ marginTop: "2.5rem" }}>
-            <Button type="primary" htmlType="submit" >
+            <Button type="primary" htmlType="submit">
               Next
             </Button>
           </Form.Item>

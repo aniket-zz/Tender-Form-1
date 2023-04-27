@@ -1,41 +1,45 @@
 // import { useState } from "react";
 import { Button, Form, Input } from "antd";
-import {  useNavigate, } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import handleSubmit from "../../controllers/handleSubmit";
-
-
 
 // const url = "http://localhost:5000/register";  // Backend endpoint earlier used
 
 const url = "https://reqres.in/api/users"; // API endpoint to be entered here
 
-
 const LoginForm = (props) => {
-
   const navigate = useNavigate();
 
-
   const onFinish = async (values) => {
+    const response = await handleSubmit(values, url);
+    const message = response.response.id; // Response ("success message") from backend is to be set here
 
-    const response = await handleSubmit(values, url);     
-    const message = response.response.id;   // Response ("success message") from backend is to be set here
+    props.setUser(message); //user is set from undefined to a value
+    console.log("message --->", message);
+    console.log("User --->", props.user);
 
-    props.setUser(message);               //user is set from undefined to a value
-    console.log('message --->', message);
-    console.log('User --->', props.user);
-
-    message ? navigate('/Details'): navigate('/')  // If user is successfully registered then naviagte to next page
+    message ? navigate("/Details") : navigate("/"); // If user is successfully registered then naviagte to next page
   };
-
 
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
 
-
   return (
     <div>
-      <h3>User Registration</h3>
+      <h3>
+        <img
+          style={{
+            height: "55px",
+            position: "relative",
+            right: "31%",
+            margin: "-5px -5px -10px -5px",
+          }}
+          alt="logo"
+          src="./ism logo.png"
+        ></img>
+        User Registration
+      </h3>
       <div className="login_div">
         <Form
           onSubmit={(e) => handleSubmit(e)}
@@ -66,7 +70,7 @@ const LoginForm = (props) => {
               },
             ]}
           >
-            <Input type="email"/>
+            <Input type="email" />
           </Form.Item>
 
           <Form.Item
@@ -98,7 +102,9 @@ const LoginForm = (props) => {
                     return Promise.resolve();
                   }
                   return Promise.reject(
-                    new Error("The two passwords that you entered do not match!")
+                    new Error(
+                      "The two passwords that you entered do not match!"
+                    )
                   );
                 },
               }),
@@ -113,7 +119,7 @@ const LoginForm = (props) => {
               span: 16,
             }}
           >
-            <Button type="primary" htmlType="submit"  >
+            <Button type="primary" htmlType="submit">
               Register
             </Button>
           </Form.Item>
@@ -122,6 +128,5 @@ const LoginForm = (props) => {
     </div>
   );
 };
-
 
 export default LoginForm;

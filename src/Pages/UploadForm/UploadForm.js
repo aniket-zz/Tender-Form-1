@@ -41,15 +41,15 @@ const UploadForm = (props) => {
   const onFinish = async (values) => {
     console.log("success: ", values);
     console.log("working", props.user);
-    props.user ? navigate('/Success'): navigate('/')
+    props.user ? navigate("/Success") : navigate("/");
   };
 
   const prop = {
-      action: 'https://reqres.in/api/users',    // API endpoint to be entered here
-      maxCount:  1,
-      headers: {
-        authorization: 'authorization-text',
-      },
+    action: "https://reqres.in/api/users", // API endpoint to be entered here
+    maxCount: 1,
+    headers: {
+      authorization: "authorization-text",
+    },
     onChange(info) {
       if (info.file.status !== "uploading") {
         console.log(info.file, info.fileList);
@@ -62,12 +62,23 @@ const UploadForm = (props) => {
     },
   };
 
-  
   return (
     <div>
-      <h3>eTenders Portal (ISM)</h3>
+      <h3>
+        <img
+          style={{
+            height: "55px",
+            position: "relative",
+            right: "27%",
+            margin: "-5px -5px -10px -5px",
+          }}
+          alt="logo"
+          src="./ism logo.png"
+        ></img>
+        eTenders Portal (ISM)
+      </h3>
       <div className="details_div">
-        <p className="bid_title">Bid Documents</p>
+        <p className="upload_title">Bid Documents</p>
 
         <Form
           {...formItemLayout}
@@ -77,17 +88,16 @@ const UploadForm = (props) => {
           labelWrap
           style={{
             maxWidth: 600,
-            marginLeft: "40px",
           }}
           scrollToFirstError
         >
           <Form.Item
-            name="PANCertificate"
-            label="Permanent Account Number (PAN)"
+            name="LegalDocument"
+            label="Legal Document"
             rules={[
               {
                 required: true,
-                message: "Please upload your PAN certificate",
+                message: "Please upload your Leagal Document",
               },
             ]}
             labelCol={{ span: "12", offset: "1" }}
@@ -105,7 +115,7 @@ const UploadForm = (props) => {
               //   try{
               //     let uploadURLRes = await axios.get('http://localhost:5000/getuploadurl');
               //     let res = await axios.post(uploadURLRes.message, formData, {     // API of the service used to upload the document
-              //     headers: {                                                            
+              //     headers: {
               //       "Content-Type": "multipart/form-data",
               //     },
               //     });
@@ -115,7 +125,7 @@ const UploadForm = (props) => {
               //   }catch(err){
               //     console.log("Eroor: ", err);
               //     onError(`${info.file.name} file upload failed.`);
-              //   } 
+              //   }
               //   // if (info.file.status !== "uploading") {
               //   //   console.log(info.file, info.fileList);
               //   // }
@@ -133,12 +143,12 @@ const UploadForm = (props) => {
           </Form.Item>
 
           <Form.Item
-            name="GSTIN"
-            label="Goods and Services Tax (GST) Status of Bidder"
+            name="CACertificate"
+            label="CA Certificate of the bidder"
             rules={[
               {
                 required: true,
-                message: "Please upload your GSTIN certificate",
+                message: "Please upload your CA certificate",
               },
             ]}
             labelCol={{ span: "13", offset: "0" }}
