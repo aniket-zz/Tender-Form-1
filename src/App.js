@@ -7,7 +7,7 @@ import UploadForm from './Pages/UploadForm/UploadForm'
 import SubmitPage from './Pages/Submit/SubmitPage'
 
 function App() {
-  const [user, setUser] = useState(undefined);
+  const [user, setUser] = useState(12);
   const [formValue, setFormValue] = useState({});
   return (
     <div className="App">
