@@ -1,5 +1,5 @@
 const handleSubmit = async (data, url) => {
-    console.log("handleSubmit",data)
+    console.log("handleSubmit data: ",data)
   
     const submitRequest = async (reqBody) => {
       try {

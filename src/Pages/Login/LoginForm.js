@@ -1,25 +1,41 @@
 // import { useState } from "react";
+import axios from "axios";
 import { Button, Form, Input } from "antd";
 import { useNavigate } from "react-router-dom";
 import handleSubmit from "../../controllers/handleSubmit";
 
 // const url = "http://localhost:5000/register";  // Backend endpoint earlier used
 
-const url = "https://reqres.in/api/users"; // API endpoint to be entered here
+// const url = "http://18.214.36.46/login"; // API endpoint to be entered here
 
 const LoginForm = (props) => {
   const navigate = useNavigate();
 
-  const onFinish = async (values) => {
-    const response = await handleSubmit(values, url);
-    const message = response.response.id; // Response ("success message") from backend is to be set here
+  // const onFinish = async (values) => {
 
-    props.setUser(message); //user is set from undefined to a value
-    console.log("message --->", message);
-    console.log("User --->", props.user);
+    const getToken = async (values) => {
+        try {
+          let result = await axios.post(
+            "http://18.214.36.46/login",
+            { "email": "test@test.com", "password" : "password" },
+          );
+          const token = result.data.access_token;
+          props.setToken(token);
 
-    message ? navigate("/Details") : navigate("/"); // If user is successfully registered then naviagte to next page
-  };
+          token ? navigate("/Details") : navigate("/");
+        } catch (e) {
+          console.error(e.message);
+        }
+      };
+    // const response = await handleSubmit(values, url);
+    // const message = response.response.id; // Response ("success message") from backend is to be set here
+    // console.log("Response: ",response);
+    // props.setUser(message); //user is set from undefined to a value
+    // // console.log("message --->", message);
+    // // console.log("User --->", props.user);
+
+  //   message ? navigate("/Details") : navigate("/"); // If user is successfully registered then naviagte to next page
+  // };
 
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
@@ -56,7 +72,7 @@ const LoginForm = (props) => {
           initialValues={{
             remember: true,
           }}
-          onFinish={onFinish}
+          onFinish={getToken}
           onFinishFailed={onFinishFailed}
           autoComplete="off"
         >
@@ -70,7 +86,7 @@ const LoginForm = (props) => {
               },
             ]}
           >
-            <Input type="email" />
+            <Input type="email"/>
           </Form.Item>
 
           <Form.Item

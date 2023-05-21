@@ -9,11 +9,12 @@ import SubmitPage from './Pages/Submit/SubmitPage'
 function App() {
   const [user, setUser] = useState(12);
   const [formValue, setFormValue] = useState({});
+  const [token, setToken] = useState("");
   return (
     <div className="App">
       <BrowserRouter>
         <Routes>
-          <Route exact path="/" element={<LoginForm user={user} setUser={setUser} />} />
+          <Route exact path="/" element={<LoginForm user={user} setUser={setUser} token = {token} setToken= {setToken}/>} />
           <Route exact path="/details" element={user ? <DetailsForm user={user} setUser={setUser} formValue = {formValue} setFormValue = {setFormValue}/> : <Navigate to="/" replace={true} />} />
           <Route exact path="/upload" element={user ? <UploadForm user={user} setUser={setUser} /> : <Navigate to="/" replace={true} />} />
           <Route exact path="/success" element={user ? <SubmitPage user={user} setUser={setUser} formValue = {formValue} setFormValue = {setFormValue}/> : <Navigate to="/" replace={true} />} />

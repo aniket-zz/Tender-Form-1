@@ -11,7 +11,7 @@ const config = {
   rules: [
     {
       type: "object",
-      required: true,
+      required: false,
       message: "Please select DOB!",
     },
   ],
@@ -156,7 +156,7 @@ const DetailsForm = (props) => {
             label="Tender Type"
             rules={[
               {
-                required: true,
+                required: false,
                 message: "Please select tender type",
               },
             ]}
@@ -182,7 +182,7 @@ const DetailsForm = (props) => {
             labelCol={{ span: "7", offset: "1" }}
             rules={[
               {
-                required: true,
+                required: false,
                 message: "Please input your Company Name / Licence Holder Name",
               },
             ]}
@@ -195,7 +195,7 @@ const DetailsForm = (props) => {
             label="Registration Number"
             rules={[
               {
-                required: true,
+                required: false,
                 message: "Please input your Registration Number!",
               },
             ]}
@@ -208,7 +208,7 @@ const DetailsForm = (props) => {
             label="Registered Address"
             rules={[
               {
-                required: true,
+                required: false,
                 message: "Please input Registered Address",
               },
             ]}
@@ -222,7 +222,7 @@ const DetailsForm = (props) => {
             labelCol={{ span: "8", offset: "0" }}
             rules={[
               {
-                required: true,
+                required: false,
                 message: "Please input Name of Partners / Directors",
               },
             ]}
@@ -235,7 +235,7 @@ const DetailsForm = (props) => {
             label="City"
             rules={[
               {
-                required: true,
+                required: false,
                 message: "Please input your City Name",
               },
             ]}
@@ -248,7 +248,7 @@ const DetailsForm = (props) => {
             label="State"
             rules={[
               {
-                required: true,
+                required: false,
                 message: "Please select State!",
               },
             ]}
@@ -267,7 +267,7 @@ const DetailsForm = (props) => {
             label="Postal Code"
             rules={[
               {
-                required: true,
+                required: false,
                 message: "Please input your Postal Code.",
               },
             ]}
@@ -281,7 +281,7 @@ const DetailsForm = (props) => {
             tooltip="PAN/TAN number must have 10 characters. For eg: AESTG2458A"
             rules={[
               {
-                required: true,
+                required: false,
                 message: "Please input your PAN Number",
               },
             ]}
@@ -294,7 +294,7 @@ const DetailsForm = (props) => {
             label="Establishment year"
             rules={[
               {
-                required: true,
+                required: false,
                 message: "Please select campany's establishment year",
               },
             ]}
@@ -313,7 +313,7 @@ const DetailsForm = (props) => {
             label="Nature of Business"
             rules={[
               {
-                required: true,
+                required: false,
                 message: "Please input your Nature of Business",
               },
             ]}
@@ -326,7 +326,7 @@ const DetailsForm = (props) => {
             label="Legal Status"
             rules={[
               {
-                required: true,
+                required: false,
                 message: "Please select campany's Legal Status",
               },
             ]}
@@ -363,7 +363,7 @@ const DetailsForm = (props) => {
             label="Company Category"
             rules={[
               {
-                required: true,
+                required: false,
                 message: "Please select Company Category.",
               },
             ]}
@@ -432,7 +432,7 @@ const DetailsForm = (props) => {
             label="Title"
             rules={[
               {
-                required: true,
+                required: false,
                 message: "Please select title",
               },
             ]}
@@ -469,7 +469,7 @@ const DetailsForm = (props) => {
             label="Contact Name"
             rules={[
               {
-                required: true,
+                required: false,
                 message: "Please input Contact Name.",
               },
             ]}
@@ -486,7 +486,7 @@ const DetailsForm = (props) => {
             label="Designation"
             rules={[
               {
-                required: true,
+                required: false,
                 message: "Please input Designation",
               },
             ]}
@@ -500,7 +500,7 @@ const DetailsForm = (props) => {
             tooltip="Phone Details eg: +91 1234567890"
             rules={[
               {
-                required: true,
+                required: false,
                 message: "Please input your phone number!",
               },
             ]}

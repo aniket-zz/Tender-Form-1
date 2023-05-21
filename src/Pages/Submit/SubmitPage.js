@@ -1,40 +1,42 @@
 import React from "react";
-import { useEffect } from "react";
+// import { useEffect } from "react";
 // import DetailsForm from "../DetailsForm/DetailsForm";
-import axios from "axios";
-import { Button, Form } from "antd";
+// import axios from "axios";
+import { Button, Form, Alert} from "antd";
 import handleSubmit from "../../controllers/handleSubmit";
+import details from "./Information.js";
 
 import { Table } from "antd";
 
 const SubmitPage = (props) => {
-  const getLegal = async (token) => {
-    try {
-      let result = await axios.post(
-        "http://18.206.81.179/v1/document/legal",
-        {
-          userId: "2",
-          docId: "2",
-          s3Path:
-            "s3://deepdelvetesting/mcl/legal/5_Legal_Status_of_the_bidder.pdf",
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            'accept': "application/json",
-            'Authorization': `Bearer ${token}` 
-          },
-        }
-      );
-      return {
-        LegalInfo : result.data?.LegalInfo,
-        partnership: result.data?.partnership
-      }
-        
-    } catch (e) {
-      console.error(e.message);
-    }
-  };
+  // const getLegal = async (token) => {
+  //   try {
+  //     let result = await axios.post(
+  //       "http://18.206.81.179/v1/document/legal",
+  //       {
+  //         userId: "2",
+  //         docId: "2",
+  //         s3Path:
+  //           "s3://deepdelvetesting/mcl/legal/5_Legal_Status_of_the_bidder.pdf",
+  //       },
+  
+  //       {
+  //         headers: {
+  //           'Access-Control-Allow-Origin': '*',
+  //           "Content-Type": "application/json",
+  //           'accept': "application/json",
+  //           'Authorization': `Bearer ${token}`,
+  //         },
+  //       }
+  //     );
+  //     return {
+  //       LegalInfo: result.data?.LegalInfo,
+  //       partnership: result.data?.partnership,
+  //     };
+  //   } catch (e) {
+  //     console.error(e.message);
+  //   }
+  // };
 
   // const getCA = async (token) => {
   //   try {
@@ -48,9 +50,10 @@ const SubmitPage = (props) => {
   //       },
   //       {
   //         headers: {
+  //           'Access-Control-Allow-Origin': '*',
   //           "Content-Type": "application/json",
   //           'accept': "application/json",
-  //           'Authorization': `Bearer ${token}` 
+  //           'Authorization': `Bearer ${token}`
   //         },
   //       }
   //     );
@@ -61,89 +64,85 @@ const SubmitPage = (props) => {
   //   }
   // };
 
-  const getPAN = async (token) => {
-    try {
-      let result = await axios.post(
-        "http://18.206.81.179/v1/document/pan",
-        {
-          userId: "4",
-          docId: "4",
-          s3Path:
-            "s3://deepdelvetesting/mcl/pan/3_Permanent_Account_Number.pdf",
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            'accept': "application/json",
-            'Authorization': `Bearer ${token}` 
-          },
-        }
-      );
-      return result.data?.panNumber;
-      
-        
-    } catch (e) {
-      console.error(e.message);
-    }
-  };
+  // const getPAN = async (token) => {
+  //   try {
+  //     let result = await axios.post(
+  //       "http://18.206.81.179/v1/document/pan",
+  //       {
+  //         userId: "4",
+  //         docId: "4",
+  //         s3Path:
+  //           "s3://deepdelvetesting/mcl/pan/3_Permanent_Account_Number.pdf",
+  //       },
+  //       {
+  //         headers: {
+  //           'Access-Control-Allow-Origin': '*',
+  //           "Content-Type": "application/json",
+  //           'accept': "application/json",
+  //           'Authorization': `Bearer ${token}`,
+  //         },
+  //       }
+  //     );
+  //     return result.data?.panNumber;
+  //   } catch (e) {
+  //     console.error(e.message);
+  //   }
+  // };
 
-  const getGSTIN = async (token) => {
-    try {
-      let result = await axios.post(
-        "http://18.206.81.179/v1/document/gstin",
-        {
-          userId: "4",
-          docId: "4",
-          s3Path:
-            "s3://deepdelvetesting/mcl/gistin/4_GST_registration.pdf",
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            'accept': "application/json",
-            'Authorization': `Bearer ${token}` 
-          },
-        }
-      );
-      return result.data?.gstinNumber;
-      
-        
-    } catch (e) {
-      console.error(e.message);
-    }
-  };
+  // const getGSTIN = async (token) => {
+  //   try {
+  //     let result = await axios.post(
+  //       "http://18.206.81.179/v1/document/gstin",
+  //       {
+  //         userId: "4",
+  //         docId: "4",
+  //         s3Path: "s3://deepdelvetesting/mcl/gistin/4_GST_registration.pdf",
+  //       },
+  //       {
+  //         headers: {
+  //           'Access-Control-Allow-Origin': '*',
+  //           'Content-Type': "application/json",
+  //           'accept': "application/json",
+  //           'Authorization': `Bearer ${token}`,
+  //         },
+  //       }
+  //     );
+  //     return result.data?.gstinNumber;
+  //   } catch (e) {
+  //     console.error(e.message);
+  //   }
+  // };
 
-  const getToken = async () => {
-    try {
-      let result = await axios.post(
-        "http://18.206.81.179/token",
-        { username: "mcl", password: "mclextract" },
-        {
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-            accept: "application/json",
-          },
-        }
-      );
+  // const getToken = async () => {
+  //   try {
+  //     let result = await axios.post(
+  //       "http://18.206.81.179/token",
+  //       { username: "mcl", password: "mclextract" },
+  //       {
+  //         headers: {
+  //           "Content-Type": "application/x-www-form-urlencoded",
+  //           accept: "application/json",
+  //         },
+  //       }
+  //     );
 
-      if (result.data.access_token) {
-        const userData = {};
-        userData.legal = getLegal(result.data.access_token);
-        // userData.CA = getCA(result.data.access_token);
-        userData.PAN = getPAN(result.data.access_token);
-        userData.GSTIN = getGSTIN(result.data.access_token);
+  //     if (result.data.access_token) {
+  //       const userData = {};
+  //       userData.legal = await getLegal(result.data.access_token);
+  //       // userData.PAN = await getPAN(result.data.access_token);
+  //       // userData.GSTIN = await getGSTIN(result.data.access_token);
+  //       userData.CA = await getCA(result.data.access_token);
+  //       return userData;
+  //     }
+  //   } catch (e) {
+  //     console.error(e.message);
+  //   }
+  // };
 
-        return userData;
-      }
-    } catch (e) {
-      console.error(e.message);
-    }
-  };
-
-  useEffect(() => {
-    const userData = getToken();
-    console.log(userData);
-  });
+  // useEffect(() => {
+  //   const userData = getToken();
+  //   console.log(userData);
+  // },[]);
 
   const onFinish = async (values) => {
     console.log("Values", values);
@@ -154,80 +153,266 @@ const SubmitPage = (props) => {
 
   const columns = [
     {
-      title: "Detail",
-      dataIndex: "detail",
-      key: "detail",
-    },
-    {
-      title: "value",
-      dataIndex: "value",
-      key: "value",
+      title: "Basic Details",
+      align: "left",
+      children: [
+        {
+          title: "Detail",
+          dataIndex: "detail",
+          key: "detail",
+        },
+        {
+          title: "value",
+          dataIndex: "value",
+          key: "value",
+        },
+      ],
     },
   ];
 
   const data = [
-    //  {
-    //   detail : 'Tender type',
-    //   value : props.formValue.TenderType
-    //  },
-    //  {
-    //   detail : 'Company Name / Licence Holder Name',
-    //   value : props.formValue.companyName
-    //  },
-    //  {
-    //   detail : 'Registration Number',
-    //   value : props.formValue.RegistrationNumber
-    //  },
-    //  {
-    //   detail : 'Registered Address',
-    //   value : props.formValue.RegisteredAddress
-    //  },
-    //  {
-    //   detail : 'Name of Partners / Directors',
-    //   value : props.formValue.NameOfPartners
-    //  },
-    //  {
-    //   detail : 'City',
-    //   value : props.formValue.City
-    //  },
-    //  {
-    //   detail : 'Postal Code',
-    //   value : props.formValue.PostalCode
-    //  },
-    //  {
-    //   detail : 'PAN Number',
-    //   value : props.formValue.PANNumber
-    //  },
-    //  {
-    //   detail : 'Establishment year',
-    //   value : props.formValue.EstablishmentYear
-    //  },
-    //  {
-    //   detail : 'Nature of Business',
-    //   value : props.formValue.NatureOfBusiness
-    //  },
-    //  {
-    //   detail : 'Legal Status',
-    //   value : props.formValue.LegalStatus
-    //  },
-    //  {
-    //   detail : 'Contact Name',
-    //   value : props.formValue.Title + " " + props.formValue.ContactName
-    //  },
-    //  {
-    //   detail : 'DOB (YYYY-MM-DD)',
-    //   value : props.formValue.DOB.$D + "/ " +  props.formValue.DOB.$M + "/ " + props.formValue.DOB.$y
-    //  },
-    //  {
-    //   detail : 'Designation',
-    //   value : props.formValue.Designation
-    //  },
-    //  {
-    //   detail : 'Phone',
-    //   value : props.formValue.prefix + "  " + props.formValue.phone
-    //  }
+    {
+      key: 1,
+      detail: "Tender type",
+      value: props.formValue?.TenderType,
+    },
+    {
+      key: 2,
+      detail: "Company Name / Licence Holder Name",
+      value: props.formValue?.companyName,
+    },
+    {
+      key: 3,
+      detail: "Registration Number",
+      value: props.formValue?.RegistrationNumber,
+    },
+    {
+      key: 4,
+      detail: "Registered Address",
+      value: props.formValue?.RegisteredAddress,
+    },
+    {
+      key: 5,
+      detail: "Name of Partners / Directors",
+      value: props.formValue?.NameOfPartners,
+    },
+    {
+      key: 6,
+      detail: "City",
+      value: props.formValue?.City,
+    },
+    {
+      key: 7,
+      detail: "Postal Code",
+      value: props.formValue?.PostalCode,
+    },
+    {
+      key: 8,
+      detail: "PAN Number",
+      value: props.formValue?.PANNumber,
+    },
+    {
+      key: 9,
+      detail: "Establishment year",
+      value: props.formValue?.EstablishmentYear,
+    },
+    {
+      key: 10,
+      detail: "Nature of Business",
+      value: props.formValue?.NatureOfBusiness,
+    },
+    {
+      key: 11,
+      detail: "Legal Status",
+      value: props.formValue?.LegalStatus,
+    },
+    {
+      key: 12,
+      detail: "Contact Name",
+      value: props.formValue?.Title + " " + props.formValue?.ContactName,
+    },
+    {
+      key: 13,
+      detail: "DOB (YYYY-MM-DD)",
+      value:
+        props.formValue.DOB?.$D +
+        "/ " +
+        props.formValue.DOB?.$M +
+        "/ " +
+        props.formValue.DOB?.$y,
+    },
+    {
+      key: 14,
+      detail: "Designation",
+      value: props.formValue?.Designation,
+    },
+    {
+      key: 15,
+      detail: "Phone",
+      value: props.formValue?.prefix + "  " + props.formValue?.phone,
+    },
   ];
 
+  //--------------------------------Legal----------------------------------
+  const [CA, Legal] = details;
+
+  const legal_columnn = [
+    {
+      title: "Legal",
+      align: "left",
+      children: [
+        {
+          title: "Name",
+          dataIndex: "name",
+          key: "name",
+          onCell: (_, index) => ({
+            colSpan: index === 0 ? 2 : 1,
+          }),
+        },
+        {
+          title: "Value",
+          dataIndex: "value",
+          key: "value",
+          onCell: (_, index) => ({
+            colSpan: index === 0 ? 0 : 1,
+          }),
+        },
+      ],
+    },
+  ];
+
+  const legal_data = [
+    {
+      name: "Partnership",
+      key: "partnership",
+    },
+    ...Object.entries(Legal?.partnership).map(([key, val], index) => ({
+      key: index,
+      name: key,
+      value: val * 100 + "%",
+    })),
+    {
+      key: "lead",
+      name: "Lead",
+      value: Legal.lead,
+    },
+  ];
+
+  //------------------------------CA---------------------------------
+  const ca_columnn = [
+    {
+      title: "CA Info",
+      align: "left",
+      children: [
+        {
+          title: "Name",
+          dataIndex: "name",
+          key: "name",
+          onCell: (_, index) => ({
+            colSpan: index === 4 ? 2 : 1,
+          }),
+        },
+        {
+          title: "Value",
+          dataIndex: "value",
+          key: "value",
+          onCell: (_, index) => ({
+            colSpan: index === 4 ? 0 : 1,
+          }),
+        },
+      ],
+    },
+  ];
+
+  const TurnOver = CA.relevantWorkExperience?.turnover; // Turnover array
+  const ca_data = [
+    {
+      key: "caNumber",
+      name: "CA Number",
+      value: CA.caNumber,
+    },
+    {
+      key: "udinNumber",
+      name: "UDIN Number",
+      value: CA.udinNo,
+    },
+    {
+      key: "companyAudited",
+      name: "Company Audited",
+      value: CA.companyAudited,
+    },
+    {
+      key: "workType",
+      name: "Work Type",
+      value: CA.workType,
+    },
+    {
+      key: "workExp",
+      name: "Relevant Work Experience",
+    },
+    ...Object.values(CA.relevantWorkExperience?.year).map((each, index) => ({
+      key: index,
+      name: each,
+      value: TurnOver[index],
+    })),
+  ];
+
+  //-----------------------Calculations Part---------------------
+
+  //-------COST OF WORK------------
+  const costOfWork = 0.8 * 112581530.5; // 80 % Cost of work in original Notice
+  const sum = TurnOver.reduce((a, b) => a + parseInt(b, 10), 0);
+  const meanTurnover = sum / TurnOver.length || 0;
+
+  //--------Joint venture------------
+  const numOfBidders = Object.entries(Legal?.partnership).length;
+  const leadShare = Math.max(...Object.values(Legal?.partnership));
+  const leastShare = Math.min(...Object.values(Legal?.partnership));
+
+
+  function Check() {
+    if(meanTurnover < costOfWork){
+      return (
+        <Alert
+            message="Bid Cancelled!"
+            description="Mean Turnover is less than tha Cost Of Work in Original Notice"
+            type="error"
+          />
+      );
+    }
+    if(numOfBidders > 3) {
+      return (
+        <Alert
+            message="Bid Cancelled!"
+            description="Number of Bidders are more than 3"
+            type="error"
+          />
+      )
+    }
+
+    if(leadShare < 0.5) {
+      return (
+        <Alert
+            message="Bid Cancelled!"
+            description="Lead Partner Share is less than 50%"
+            type="error"
+          />
+      )
+    }
+
+    if(leastShare < 0.20) {
+      return (
+        <Alert
+            message="Bid Cancelled!"
+            description="Partnership share of one or more Bidder is less than 20%"
+            type="error"
+            showIcon
+          />
+      )
+    }
+  }
+
+  //----------------------Final Return-----------------------
   return (
     <div>
       <h3>
@@ -247,7 +432,16 @@ const SubmitPage = (props) => {
         Bidder Details
       </p>
       <div className="submit_div">
-        <Table columns={columns} dataSource={data} />
+        <Table bordered={true} columns={columns} dataSource={data} />
+        <br />
+        <Table
+          bordered={true}
+          columns={legal_columnn}
+          dataSource={legal_data}
+        />
+        <br />
+        <Table bordered={true} columns={ca_columnn} dataSource={ca_data} />
+        
         <Form
           onSubmit={(e) => handleSubmit(e)}
           name="basic"
@@ -267,6 +461,11 @@ const SubmitPage = (props) => {
           onFinishFailed={onFinishFailed}
           autoComplete="off"
         >
+        {Check()? Check() :<Alert
+            message="Bid Under Review!"
+            description="Bid is under review and you'll be informed soon."
+            type="info"
+          />}
           <Button
             style={{ margin: "20px 0px 10px 0px" }}
             type="primary"
