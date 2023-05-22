@@ -1,8 +1,8 @@
 // import { useState } from "react";
-import axios from "axios";
 import { Button, Form, Input } from "antd";
 import { useNavigate } from "react-router-dom";
-import handleSubmit from "../../controllers/handleSubmit";
+import customFetch from "../../utils/axios";
+// import handleSubmit from "../../controllers/handleSubmit";
 
 // const url = "http://localhost:5000/register";  // Backend endpoint earlier used
 
@@ -13,26 +13,26 @@ const LoginForm = (props) => {
 
   // const onFinish = async (values) => {
 
-    const getToken = async (values) => {
-        try {
-          let result = await axios.post(
-            "http://18.214.36.46/login",
-            { "email": "test@test.com", "password" : "password" },
-          );
-          const token = result.data.access_token;
-          props.setToken(token);
-
-          token ? navigate("/Details") : navigate("/");
-        } catch (e) {
-          console.error(e.message);
-        }
-      };
-    // const response = await handleSubmit(values, url);
-    // const message = response.response.id; // Response ("success message") from backend is to be set here
-    // console.log("Response: ",response);
-    // props.setUser(message); //user is set from undefined to a value
-    // // console.log("message --->", message);
-    // // console.log("User --->", props.user);
+  const getToken = async ({ username, password }) => {
+    try {
+      const data = JSON.stringify({ email: username, password: password });
+      const result = await customFetch.post("/login", data);
+      const token = result.data.access_token;
+      props.setToken(token);
+      if(token){
+        localStorage.setItem("token", token);
+      }
+      token ? navigate("/Details") : navigate("/");
+    } catch (e) {
+      console.error(e.message);
+    }
+  };
+  // const response = await handleSubmit(values, url);
+  // const message = response.response.id; // Response ("success message") from backend is to be set here
+  // console.log("Response: ",response);
+  // props.setUser(message); //user is set from undefined to a value
+  // // console.log("message --->", message);
+  // // console.log("User --->", props.user);
 
   //   message ? navigate("/Details") : navigate("/"); // If user is successfully registered then naviagte to next page
   // };
@@ -58,7 +58,6 @@ const LoginForm = (props) => {
       </h3>
       <div className="login_div">
         <Form
-          onSubmit={(e) => handleSubmit(e)}
           name="basic"
           labelCol={{
             span: 8,
@@ -86,7 +85,7 @@ const LoginForm = (props) => {
               },
             ]}
           >
-            <Input type="email"/>
+            <Input type="email" />
           </Form.Item>
 
           <Form.Item

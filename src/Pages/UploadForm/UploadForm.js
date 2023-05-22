@@ -1,4 +1,5 @@
 import { useState } from "react";
+import customFetch from "../../utils/axios";
 import { UploadOutlined } from "@ant-design/icons";
 import { Button, message, Form, Upload } from "antd";
 import { useNavigate } from "react-router-dom";
@@ -38,37 +39,52 @@ const tailFormItemLayout = {
 };
 
 const config = {
-  bucketName: process.env.S3_BUCKET,
-  region: process.env.REGION,
-  accessKeyId: process.env.ACCESS_KEY,
-  secretAccessKey: process.env.SECRET_ACCESS_KEY,
+  bucketName: process.env.REACT_APP_S3_BUCKET,
+  region: process.env.REACT_APP_REGION,
+  accessKeyId: process.env.REACT_APP_ACCESS_KEY,
+  secretAccessKey: process.env.REACT_APP_SECRET_ACCESS_KEY,
 };
 
 const UploadForm = (props) => {
+  console.log(process.env.REACT_APP_S3_BUCKET);
   const navigate = useNavigate();
   var links = {};
 
   const [form] = Form.useForm();
-  const onFinish = async (values) => {
-    console.log("success: ", values);
-    console.log("working", props.user);
-    props.token ? navigate("/Success") : navigate("/");
+  const onFinish = async () => {
+    // making a request to server
+    console.log('submitting ... ');
+    const reqObj = {
+      ...links,
+      attorney_nit_desc:
+        "Hiring of HEMMs (Shovels, Dumpers, Drills, Dozers, Graders, Fog Canons etc.) for transfer & transportation of materials in various strata including drilling, excavation, dumping, spreading, dozing and other allied works in specified areas for dumping for exposing various coal seams from surface, down to seam II B at Ananta OCP as per the instructions of Project Officer/Management of Ananta OCP, Jagannath Area, MCL,",
+    };
+    const usrToken = localStorage.getItem("token");
+    console.log(reqObj);
+
+    const resp = customFetch.post("/result", {links: JSON.stringify(reqObj)}, {
+      headers: {
+        authorization: `Bearer ${usrToken}`,
+      },
+    });
+    if (resp.data === "0")
+      message.error("Something went wrong ! Please try again");
+    else
+      message.success("Request successfull ! See reports section for result");
   };
 
   const handleUpload = async (info) => {
     const { onSuccess, onError } = info;
     var doc = info.file;
-    
+
     uploadFile(doc, config)
       .then((data) => {
         const name = info.filename;
         if (data.result.status === 204) {
-          links = {[name]: data.location, ...links}
+          links = { [name]: data.location, ...links };
           console.log(links);
           onSuccess(
-            message.success(
-              `${info.file.name} file uploaded successfully`
-            )
+            message.success(`${info.file.name} file uploaded successfully`)
           );
         } else if (data.result.status !== 204) {
           onError(`${info.file.name} file upload failed.`);
@@ -78,7 +94,7 @@ const UploadForm = (props) => {
         console.log("Eroor: ", err);
         onError(`${info.file.name} file upload failed.`);
       });
-  }
+  };
 
   const prop = {
     maxCount: 1,
@@ -120,17 +136,15 @@ const UploadForm = (props) => {
           {...formItemLayout}
           form={form}
           name="Upload"
-          onFinish={onFinish}
           labelWrap
           style={{
             maxWidth: 600,
           }}
           scrollToFirstError
         >
-
-{/* ---------------LEGAL DOCUMENT------------------- */}
+          {/* ---------------LEGAL DOCUMENT------------------- */}
           <Form.Item
-            name="LegalDocument"
+            name="legal_link"
             label="Legal Document"
             rules={[
               {
@@ -141,45 +155,44 @@ const UploadForm = (props) => {
             labelCol={{ span: "12", offset: "1" }}
           >
             <Upload
-              name="LegalDocument"
+              name="legal_link"
               {...prop}
               customRequest={handleUpload}
 
-                // formData.append("PAN", doc);
-                // try{
-                //   let uploadURLRes = await axios.get('http://localhost:5000/getuploadurl');
-                //   let res = await axios.post(uploadURLRes.message, formData, {     // API of the service used to upload the document
-                //   headers: {
-                //     "Content-Type": "multipart/form-data",
-                //   },
-                //   });
-                //   await axios.post('http://localhost:5000/uploaddetails',res)
+              // formData.append("PAN", doc);
+              // try{
+              //   let uploadURLRes = await axios.get('http://localhost:5000/getuploadurl');
+              //   let res = await axios.post(uploadURLRes.message, formData, {     // API of the service used to upload the document
+              //   headers: {
+              //     "Content-Type": "multipart/form-data",
+              //   },
+              //   });
+              //   await axios.post('http://localhost:5000/uploaddetails',res)
 
-                // onSuccess(message.success(`${info.file.name} file uploaded successfully`));
-                // }
-                // catch(err){
-                //   console.log("Eroor: ", err);
-                //   onError(`${info.file.name} file upload failed.`);
-                // }
-                // if (info.file.status !== "uploading") {
-                //   console.log(info.file, info.fileList);
-                // }
-                // if (info.file.status === "done") {
-                //   message.success(
-                //     `${info.file.name} file uploaded successfully`
-                //   );
-                // } else if (info.file.status === "error") {
-                //   message.error(`${info.file.name} file upload failed.`);
-                // }
+              // onSuccess(message.success(`${info.file.name} file uploaded successfully`));
+              // }
+              // catch(err){
+              //   console.log("Eroor: ", err);
+              //   onError(`${info.file.name} file upload failed.`);
+              // }
+              // if (info.file.status !== "uploading") {
+              //   console.log(info.file, info.fileList);
+              // }
+              // if (info.file.status === "done") {
+              //   message.success(
+              //     `${info.file.name} file uploaded successfully`
+              //   );
+              // } else if (info.file.status === "error") {
+              //   message.error(`${info.file.name} file upload failed.`);
+              // }
             >
               <Button icon={<UploadOutlined />}>Click to upload</Button>
             </Upload>
           </Form.Item>
 
-
-{/* ---------------CA CERTIFICATE------------------- */}
+          {/* ---------------CA CERTIFICATE------------------- */}
           <Form.Item
-            name="CACertificate"
+            name="ca_link"
             label="CA Certificate of the bidder"
             rules={[
               {
@@ -190,7 +203,7 @@ const UploadForm = (props) => {
             labelCol={{ span: "13", offset: "0" }}
           >
             <Upload
-              name="CACertificate"
+              name="ca_link"
               // customRequest={(e) => {
               //   var formData = new FormData();
               //   var doc = e.file;
@@ -209,9 +222,9 @@ const UploadForm = (props) => {
             </Upload>
           </Form.Item>
 
-{/* ---------------PAN CERTIFICATE------------------- */}
+          {/* ---------------PAN CERTIFICATE------------------- */}
           <Form.Item
-            name="PAN"
+            name="pan_link"
             label="PAN Document of the Bidder"
             rules={[
               {
@@ -221,18 +234,31 @@ const UploadForm = (props) => {
             ]}
             labelCol={{ span: "13", offset: "0" }}
           >
-            <Upload
-              name="PAN"
-              {...prop}
-              customRequest={handleUpload}
-            >
+            <Upload name="pan_link" {...prop} customRequest={handleUpload}>
               <Button icon={<UploadOutlined />}>Click to upload</Button>
             </Upload>
           </Form.Item>
 
-{/* ---------------GSTIN DOCUMENT------------------- */}
+          {/* ---------------ATTORNEY DOCUMENT------------------- */}
           <Form.Item
-            name="GSTIN"
+            name="attorney_link"
+            label="Affidavit document"
+            rules={[
+              {
+                required: true,
+                message: "Please upload your Affidavit Document",
+              },
+            ]}
+            labelCol={{ span: "13", offset: "0" }}
+          >
+            <Upload name="attorney_link" {...prop} customRequest={handleUpload}>
+              <Button icon={<UploadOutlined />}>Click to upload</Button>
+            </Upload>
+          </Form.Item>
+
+          {/* ---------------GSTIN DOCUMENT------------------- */}
+          <Form.Item
+            name="gstin_link"
             label="GSTIN Document"
             rules={[
               {
@@ -242,17 +268,12 @@ const UploadForm = (props) => {
             ]}
             labelCol={{ span: "12", offset: "1" }}
           >
-            <Upload
-              name="GSTIN"
-              {...prop}
-              customRequest={handleUpload}
-            >
+            <Upload name="gstin_link" {...prop} customRequest={handleUpload}>
               <Button icon={<UploadOutlined />}>Click to upload</Button>
             </Upload>
           </Form.Item>
 
-
-{/* ---------------WORK EXPERIENCE------------------- */}
+          {/* ---------------WORK EXPERIENCE------------------- */}
           <Form.Item
             name="WorkExperience"
             label="Work Experience document of the bidder"
@@ -273,10 +294,9 @@ const UploadForm = (props) => {
             </Upload>
           </Form.Item>
 
-
-{/* ---------------WORKING CAPITAL------------------- */}
+          {/* ---------------WORKING CAPITAL------------------- */}
           <Form.Item
-            name="WorkingCapital"
+            name="workcap_link"
             label="Working Capital Document"
             rules={[
               {
@@ -286,19 +306,14 @@ const UploadForm = (props) => {
             ]}
             labelCol={{ span: "12", offset: "1" }}
           >
-            <Upload
-              name="WorkingCapital"
-              {...prop}
-              customRequest={handleUpload}
-            >
+            <Upload name="workcap_link" {...prop} customRequest={handleUpload}>
               <Button icon={<UploadOutlined />}>Click to upload</Button>
             </Upload>
           </Form.Item>
 
-
-{/* ---------------DIGITAL SIGNATURE------------------- */}
+          {/* ---------------DIGITAL SIGNATURE------------------- */}
           <Form.Item
-            name="DigitalSignature"
+            name="dsc_link"
             label="Digital Signature of the bidder"
             rules={[
               {
@@ -308,18 +323,14 @@ const UploadForm = (props) => {
             ]}
             labelCol={{ span: "13", offset: "0" }}
           >
-            <Upload
-              name="DigitalSignature"
-              {...prop}
-              customRequest={handleUpload}
-            >
+            <Upload name="dsc_link" {...prop} customRequest={handleUpload}>
               <Button icon={<UploadOutlined />}>Click to upload</Button>
             </Upload>
           </Form.Item>
 
-{/* ----------------------SUBMIT BUTTON-------------------------- */}
+          {/* ----------------------SUBMIT BUTTON-------------------------- */}
           <Form.Item {...tailFormItemLayout}>
-            <Button type="primary" htmlType="submit">
+            <Button type="primary" htmlType="button" onClick={onFinish}>
               Submit
             </Button>
           </Form.Item>
