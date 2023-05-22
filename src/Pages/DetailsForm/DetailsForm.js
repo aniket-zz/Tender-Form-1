@@ -4,6 +4,8 @@ import { States, Years } from "./States";
 // import onSubmit from "../../controllers/submitController";
 import { useNavigate } from "react-router-dom";
 import handleSubmit from "../../controllers/handleSubmit";
+import customFetch from "../../utils/axios";
+import { message } from "antd";
 
 const { Option } = Select;
 
@@ -59,14 +61,21 @@ const DetailsForm = (props) => {
   const [form] = Form.useForm();
 
   const onFinish = async (values) => {
-    console.log("success: ", values);
-    props.setFormValue(values);
-    console.log("User -->", props.user);
-    await handleSubmit(values, url);
-    if (props.user) {
-      navigate("/upload");
-    } else {
-      navigate("/");
+    try {
+      console.log("success: ", values);
+      props.setFormValue(values);
+      const usrToken = localStorage.getItem("token");
+      // console.log("User -->", props.user);
+      const resp = await customFetch.post("/details", {details: JSON.stringify(values)}, {
+        headers: {
+          authorization: `Bearer ${usrToken}`,
+        },
+      });
+      message.success(resp?.data?.msg);
+      navigate('/upload')
+    } catch (e) {
+      console.log(e);
+      message.error(e.data);
     }
   };
 
@@ -415,14 +424,14 @@ const DetailsForm = (props) => {
             }}
           >
             <img
-            style={{
-              height: "15px",
-              marginRight: "5px",
-              marginLeft: "-5px"
-            }}
-            alt="Title_image"
-            src="./bullet1.png"
-          ></img>
+              style={{
+                height: "15px",
+                marginRight: "5px",
+                marginLeft: "-5px",
+              }}
+              alt="Title_image"
+              src="./bullet1.png"
+            ></img>
             Contact Details{" "}
             <span>(Enter Company's Contact Person Details)</span>
           </p>
