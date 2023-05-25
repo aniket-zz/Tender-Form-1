@@ -16,7 +16,7 @@ const SubmitPage = (props) => {
   const usrToken = localStorage.getItem("token");
 
   const [status, setStatus] = useState(1);
-  const [info, setInfo] = useState([]);
+  const [info, setInfo] = useState({});
 
   const logOut = async () => {
     const resp = await customFetch.post("/logout", {
@@ -32,32 +32,6 @@ const SubmitPage = (props) => {
     }
   }
 
-  const getDetails = async () => {
-    try {
-        const resp = await axios.get(
-        "http://18.214.36.46/reports", {
-          headers: {
-            authorization: `Bearer ${usrToken}`,
-          },
-        }
-      )
-      if(resp.data.status === "0")
-      {
-        const arr = {details: resp.data.details, reports: resp.data.reports};
-        const temp = resp.data.status;
-        setStatus(temp)
-        setInfo(arr)
-      }
-    } catch (e) {
-      console.log(e.message)
-    } 
-  }   
-  useEffect(() => {
-    getDetails()   
-     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  
   const onFinish = async (values) => {
     console.log(values);
     logOut()
@@ -65,11 +39,37 @@ const SubmitPage = (props) => {
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
+ 
+  
+  useEffect(() => {
+    const getDetails = async () => {
+      try {
+          const resp = await axios.get(
+          "http://18.214.36.46/reports", {
+            headers: {
+              authorization: `Bearer ${usrToken}`,
+            },
+          }
+        )
+        if(resp.data.status === "0")
+        {
+          const arr = {details: resp.data.details, reports: resp.data.reports};
+          const temp = resp.data.status;
+          setStatus(temp)
+          setInfo(arr)
+        }
+      } catch (e) {
+        console.log(e.message)
+      } 
+    } 
+    getDetails() 
+  }
+   // eslint-disable-next-line react-hooks/exhaustive-deps
+  ,[]);
 
-  const details = (info);
-  console.log(details);
+  const details = info.details? JSON.parse(info.details): undefined;
 
-  const columns = [
+  const columns = details ? [
     {
       title: "Basic Details",
       align: "left",
@@ -86,7 +86,7 @@ const SubmitPage = (props) => {
         },
       ],
     },
-  ];
+  ]: {};
 
   const data = [
     {
@@ -152,7 +152,7 @@ const SubmitPage = (props) => {
     {
       key: 13,
       detail: "DOB (YYYY-MM-DD)",
-      value: details?.DOB.substring(0,10)
+      value: details?.DOB?.substring(0,10)
         // details?.DOB?.$D +
         // "/ " +
         // details?.DOB?.$M +
@@ -172,49 +172,50 @@ const SubmitPage = (props) => {
   ];
 
   //--------------------------------Legal----------------------------------
-  // const Legal = details[1]?.legal;
+  const reports = info.reports? JSON.parse(info.reports): {};
+  const Legal = reports.legal? reports.legal : undefined;
 
-  // const legal_columnn = [
-  //   {
-  //     title: "Legal",
-  //     align: "left",
-  //     children: [
-  //       {
-  //         title: "Name",
-  //         dataIndex: "name",
-  //         key: "name",
-  //         onCell: (_, index) => ({
-  //           colSpan: index === 0 ? 2 : 1,
-  //         }),
-  //       },
-  //       {
-  //         title: "Value",
-  //         dataIndex: "value",
-  //         key: "value",
-  //         onCell: (_, index) => ({
-  //           colSpan: index === 0 ? 0 : 1,
-  //         }),
-  //       },
-  //     ],
-  //   },
-  // ];
+  const legal_columnn = [
+    {
+      title: "Legal",
+      align: "left",
+      children: [
+        {
+          title: "Name",
+          dataIndex: "name",
+          key: "name",
+          onCell: (_, index) => ({
+            colSpan: index === 0 ? 2 : 1,
+          }),
+        },
+        {
+          title: "Value",
+          dataIndex: "value",
+          key: "value",
+          onCell: (_, index) => ({
+            colSpan: index === 0 ? 0 : 1,
+          }),
+        },
+      ],
+    },
+  ];
 
-  // const legal_data = [
-  //   {
-  //     name: "Partnership",
-  //     key: "partnership",
-  //   },
-  //   ...Object.entries(Legal?.partners).map(([key, val], index) => ({
-  //     key: index,
-  //     name: key,
-  //     value: val * 100 + "%",
-  //   })),
-  //   {
-  //     key: "lead",
-  //     name: "Lead",
-  //     value: Legal?.lead,
-  //   },
-  // ];
+  const legal_data = Legal ? [
+    {
+      name: "Partnership",
+      key: "partnership",
+    },
+    ...Object.entries(Legal?.partners).map(([key, val], index) => ({
+      key: index,
+      name: key,
+      value: val * 100 + "%",
+    })),
+    {
+      key: "lead",
+      name: "Lead",
+      value: Legal?.lead,
+    },
+  ]: {};
 
   // const legal_data1 = [
   //   {
@@ -225,138 +226,138 @@ const SubmitPage = (props) => {
   // ]
 
   // //------------------------------CA---------------------------------
-  // const CA = {
-  //   udin: details?.udin,
-  //   ca_name: details?.ca_name,
-  //   companyAudited: details?.company_audited,
-  //   workType: details?.type_of_work,
-  //   relevantWorkExperience: details?.relevent_work_experience
-  // }
+  
+  const CA = reports.relevent_work_experience ?{
+    udin: reports?.udin,
+    ca_name: reports?.ca_name,
+    companyAudited: reports?.company_audited,
+    workType: reports?.type_of_work,
+    relevantWorkExperience: reports?.relevent_work_experience
+  }: undefined;
 
-  // const ca_columnn = [
-  //   {
-  //     title: "CA Info",
-  //     align: "left",
-  //     children: [
-  //       {
-  //         title: "Name",
-  //         dataIndex: "name",
-  //         key: "name",
-  //         onCell: (_, index) => ({
-  //           colSpan: index === 4 ? 2 : 1,
-  //         }),
-  //       },
-  //       {
-  //         title: "Value",
-  //         dataIndex: "value",
-  //         key: "value",
-  //         onCell: (_, index) => ({
-  //           colSpan: index === 4 ? 0 : 1,
-  //         }),
-  //       },
-  //     ],
-  //   },
-  // ];
+  const ca_columnn = [
+    {
+      title: "CA Info",
+      align: "left",
+      children: [
+        {
+          title: "Name",
+          dataIndex: "name",
+          key: "name",
+          onCell: (_, index) => ({
+            colSpan: index === 4 ? 2 : 1,
+          }),
+        },
+        {
+          title: "Value",
+          dataIndex: "value",
+          key: "value",
+          onCell: (_, index) => ({
+            colSpan: index === 4 ? 0 : 1,
+          }),
+        },
+      ],
+    },
+  ];
 
   // const TurnOver = Object.values(CA?.relevantWorkExperience).map((each) =>{
   //   return each["Gross Turn Over"]
   // });
   
-  // const ca_data = [
-  //   {
-  //     key: "ca_name",
-  //     name: "CA Name",
-  //     value: CA?.ca_name,
-  //   },
-  //   {
-  //     key: "udin",
-  //     name: "UDIN",
-  //     value: CA?.udin,
-  //   },
-  //   {
-  //     key: "companyAudited",
-  //     name: "Company Audited",
-  //     value: CA?.companyAudited,
-  //   },
-  //   {
-  //     key: "workType",
-  //     name: "Work Type",
-  //     value: CA?.workType,
-  //   },
-  //   {
-  //     key: "workExp",
-  //     name: "Relevant Work Experience",
-  //   },
-  //   ...Object.values(CA?.relevantWorkExperience).map((each, index) => ({
-  //     key: index,
-  //     name: each["Financial Year"],
-  //     value: each["Gross Turn Over"],
-  //   })),
-  // ];
+  const ca_data = CA ? [
+    {
+      key: "ca_name",
+      name: "CA Name",
+      value: CA?.ca_name,
+    },
+    {
+      key: "udin",
+      name: "UDIN",
+      value: CA?.udin,
+    },
+    {
+      key: "companyAudited",
+      name: "Company Audited",
+      value: CA?.companyAudited,
+    },
+    {
+      key: "workType",
+      name: "Work Type",
+      value: CA?.workType,
+    },
+    {
+      key: "workExp",
+      name: "Relevant Work Experience",
+    },
+    ...Object.values(CA?.relevantWorkExperience).map((each, index) => ({
+      key: index,
+      name: each["Financial Year"],
+      value: each["Gross Turn Over"],
+    })),
+  ]: {};
 
-  // //-----------------------Other Part--------------------------
+  //-----------------------Other Part--------------------------
 
-  // const other_column = [
-  //   {
-  //     title: "Details",
-  //     dataIndex: "details",
-  //     key: "details",
-  //     onCell: (_, index) => ({
-  //       colSpan: index === 0 ? 2 : 1,
-  //     }),
-  //   },
-  //   {
-  //     title: "Value",
-  //     dataIndex: "value",
-  //     key: "value",
-  //     onCell: (_, index) => ({
-  //       colSpan: index === 0 ? 0 : 1,
-  //     }),
-  //   }
-  // ]
+  const other_column = [
+    {
+      title: "Details",
+      dataIndex: "details",
+      key: "details",
+      onCell: (_, index) => ({
+        colSpan: index === 0 ? 2 : 1,
+      }),
+    },
+    {
+      title: "Value",
+      dataIndex: "value",
+      key: "value",
+      onCell: (_, index) => ({
+        colSpan: index === 0 ? 0 : 1,
+      }),
+    }
+  ]
 
-  // const other_data = [
-  //   {
-  //     key: 1,
-  //     details: "PAN",
-  //   },
-  //   ...Object.values(details?.pan).map((each, index) => ({
-  //     key: index + 7,
-  //     value: each
-  //   })),
-  //   {
-  //     key: 2,
-  //     details: "GSTIN",
-  //     value: details?.gstin
-  //   },
-  //   {
-  //     key: 3,
-  //     details: "Power Of Attorny",
-  //     value: details?.attorney
-  //   },
-  //   {
-  //     key: 4,
-  //     details: "Digital Signature",
-  //     value: details?.dsc
-  //   },
-  //   {
-  //     key: 5,
-  //     details: "Workcap (Rs)",
-  //     value: details?.workcap
-  //   },
-  //   {
-  //     key: 6,
-  //     details: "Similar Work",
-  //     value: details?.similar_work ? "YES" : "NO"
-  //   }
-    
-  // ]
+  const other_data = reports.pan ? [
+    {
+      key: 1,
+      details: "PAN",
+    },
+    ...Object.values(reports?.pan).map((each, index) => ({
+      key: index + 7,
+      value: each
+    })),
+    {
+      key: 2,
+      details: "GSTIN",
+      value: reports?.gstin
+    },
+    {
+      key: 3,
+      details: "Power Of Attorny",
+      value: reports?.attorney
+    },
+    {
+      key: 4,
+      details: "Digital Signature",
+      value: reports?.dsc
+    },
+    {
+      key: 5,
+      details: "Workcap (Rs)",
+      value: reports?.workcap
+    },
+    {
+      key: 6,
+      details: "Similar Work",
+      value: reports?.similar_work ? "YES" : "NO"
+    }
+  ] : {};
 
-  // //-----------------------Calculations Part---------------------
+  //-----------------------Calculations Part---------------------
 
-  // //-------COST OF WORK------------
-  // const costOfWork = 0.8 * details?.workcap; // 80 % Cost of work in original Notice
-  // const sum = TurnOver.reduce((a, b) => a + parseInt(b, 10), 0);
+  //-------COST OF WORK------------
+  // const costOfWork = 0.8 * reports?.workcap; // 80 % Cost of work in original Notice
+  // const sum = TurnOver?.reduce((a, b) => a + parseInt(b, 10), 0);
   // const meanTurnover = sum / TurnOver.length || 0;
 
   // //--------Joint venture------------
@@ -429,20 +430,19 @@ const SubmitPage = (props) => {
       </p>
       <div className="submit_div">
       
-      {/* {status===0? <div>
-          <Table bordered={true} columns={columns||{}} dataSource={data||{}} /> 
+      { status==="0"? <div>
+          <Table bordered={true} columns={columns} dataSource={data} /> 
           <br />
           <Table
             bordered={true}
-            columns={legal_columnn||{}}
-            dataSource= {Legal.JV ? legal_data: legal_data1}
+            columns={legal_columnn  }
+            dataSource= {legal_data}
           />
           <br />
           <Table bordered={true} columns={ca_columnn} dataSource={ca_data} />
           <br />
           <Table bordered={true} columns={other_column} dataSource={other_data} />
-        </div>: message.success("Bid Under Review!")} */}
-        <Table bordered={true} columns={columns} dataSource={data? data: {}} /> 
+        </div>: console.log("Bid Under Review!")}
 
 
         <Form
@@ -464,18 +464,11 @@ const SubmitPage = (props) => {
           onFinishFailed={onFinishFailed}
           autoComplete="off"
         >
-          {/* {status===0 ? Check() : <Alert
+          {/* {status==="0" ? Check() : <Alert
             message="Bid Under Review!"
             description="Bid is under review!"
             type="info"
           />} */}
-          {/* <Button
-            style={{ margin: "20px 20px 10px 0px" }}
-            type="primary"
-            onClick={getDetails}
-          >
-            Load data
-          </Button> */}
 
           <Button
             style={{ margin: "20px 0px 10px 0px" }}
