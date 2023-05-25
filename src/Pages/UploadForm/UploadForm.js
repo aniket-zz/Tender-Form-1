@@ -1,4 +1,4 @@
-import { useState } from "react";
+// import { useState } from "react";
 import customFetch from "../../utils/axios";
 import { UploadOutlined } from "@ant-design/icons";
 import { Button, message, Form, Upload } from "antd";
@@ -68,9 +68,16 @@ const UploadForm = (props) => {
       },
     });
     if (resp.data === "0")
+    {
       message.error("Something went wrong ! Please try again");
+      navigate("/upload")
+    }
+      
     else
+    {
       message.success("Request successfull ! See reports section for result");
+      navigate("/Success")
+    }
   };
 
   const handleUpload = async (info) => {

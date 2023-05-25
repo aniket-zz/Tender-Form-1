@@ -19,10 +19,11 @@ const LoginForm = (props) => {
       const result = await customFetch.post("/login", data);
       const token = result.data.access_token;
       props.setToken(token);
+      const userExist = result.data.isFilled;
       if(token){
         localStorage.setItem("token", token);
       }
-      token ? navigate("/Details") : navigate("/");
+      userExist ? navigate("/Success") : navigate("/Details");
     } catch (e) {
       console.error(e.message);
     }

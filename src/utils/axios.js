@@ -17,7 +17,7 @@ customFetch.interceptors.response.use(
     return response;
   },
   function (error) {
-    console.log("error in axios interceptors !");
+    console.log("error in axios interceptors!");
     return Promise.reject(error);
   }
 );
