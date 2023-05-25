@@ -51,7 +51,7 @@ const SubmitPage = (props) => {
             },
           }
         )
-        if(resp.data.status === "0")
+        if(resp.data.status === "1")
         {
           const arr = {details: resp.data.details, reports: resp.data.reports};
           const temp = resp.data.status;
@@ -68,6 +68,7 @@ const SubmitPage = (props) => {
   ,[]);
 
   const details = info.details? JSON.parse(info.details): undefined;
+  console.log(info);
 
   const columns = details ? [
     {
@@ -430,7 +431,7 @@ const SubmitPage = (props) => {
       </p>
       <div className="submit_div">
       
-      { status==="0"? <div>
+      { status==="1"? <div>
           <Table bordered={true} columns={columns} dataSource={data} /> 
           <br />
           <Table
@@ -464,7 +465,7 @@ const SubmitPage = (props) => {
           onFinishFailed={onFinishFailed}
           autoComplete="off"
         >
-          {/* {status==="0" ? Check() : <Alert
+          {/* {status==="1" ? Check() : <Alert
             message="Bid Under Review!"
             description="Bid is under review!"
             type="info"

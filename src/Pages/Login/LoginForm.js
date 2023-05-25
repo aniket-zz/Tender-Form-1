@@ -13,17 +13,35 @@ const LoginForm = (props) => {
 
   // const onFinish = async (values) => {
 
+  const signUp = async (data) => {
+    try {
+      const result = await customFetch.post("/signup", data);
+      const token = result.data.access_token;
+      props.setToken(token);
+      // const userExist = result.data.isFilled;
+      if(token){
+        localStorage.setItem("token", token);
+        navigate("/Details")
+      }
+    } catch (e) {
+      console.error(e.message);
+    }
+  }
+
   const getToken = async ({ username, password }) => {
     try {
       const data = JSON.stringify({ email: username, password: password });
       const result = await customFetch.post("/login", data);
       const token = result.data.access_token;
-      props.setToken(token);
       const userExist = result.data.isFilled;
       if(token){
         localStorage.setItem("token", token);
+        props.setToken(token);
+        userExist==="0" ? navigate("/Details"): navigate("/success")
       }
-      userExist ? navigate("/Success") : navigate("/Details");
+      else{
+        signUp(data)
+      }
     } catch (e) {
       console.error(e.message);
     }

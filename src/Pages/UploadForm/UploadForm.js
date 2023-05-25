@@ -38,11 +38,17 @@ const tailFormItemLayout = {
   },
 };
 
+// const config = {
+//   bucketName: process.env.REACT_APP_S3_BUCKET,
+//   region: process.env.REACT_APP_REGION,
+//   accessKeyId: process.env.REACT_APP_ACCESS_KEY,
+//   secretAccessKey: process.env.REACT_APP_SECRET_ACCESS_KEY,
+// };
 const config = {
-  bucketName: process.env.REACT_APP_S3_BUCKET,
-  region: process.env.REACT_APP_REGION,
-  accessKeyId: process.env.REACT_APP_ACCESS_KEY,
-  secretAccessKey: process.env.REACT_APP_SECRET_ACCESS_KEY,
+  bucketName: "bidderdocbucket",
+  region: "ap-south-1",
+  accessKeyId: "AKIAZOZ2MKWPKL42MQWK",
+  secretAccessKey: "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",
 };
 
 const UploadForm = (props) => {
