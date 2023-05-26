@@ -15,7 +15,7 @@ const SubmitPage = (props) => {
   const navigate = useNavigate();
   const usrToken = localStorage.getItem("token");
 
-  const [status, setStatus] = useState(1);
+  const [status, setStatus] = useState(0);
   const [info, setInfo] = useState({});
 
   const logOut = async () => {
@@ -89,7 +89,7 @@ const SubmitPage = (props) => {
     },
   ]: {};
 
-  const data = [
+  const data = details? [
     {
       key: 1,
       detail: "Tender type",
@@ -170,7 +170,7 @@ const SubmitPage = (props) => {
       detail: "Phone",
       value: details?.prefix + "  " + details?.phone,
     },
-  ];
+  ]: {};
 
   //--------------------------------Legal----------------------------------
   const reports = info.reports? JSON.parse(info.reports): {};
@@ -260,10 +260,6 @@ const SubmitPage = (props) => {
       ],
     },
   ];
-
-  // const TurnOver = Object.values(CA?.relevantWorkExperience).map((each) =>{
-  //   return each["Gross Turn Over"]
-  // });
   
   const ca_data = CA ? [
     {
@@ -357,6 +353,10 @@ const SubmitPage = (props) => {
   //-----------------------Calculations Part---------------------
 
   //-------COST OF WORK------------
+  // const TurnOver = Object.values(CA?.relevantWorkExperience).map((each) =>{
+  //   return each["Gross Turn Over"]
+  // });
+
   // const costOfWork = 0.8 * reports?.workcap; // 80 % Cost of work in original Notice
   // const sum = TurnOver?.reduce((a, b) => a + parseInt(b, 10), 0);
   // const meanTurnover = sum / TurnOver.length || 0;
@@ -436,7 +436,7 @@ const SubmitPage = (props) => {
           <br />
           <Table
             bordered={true}
-            columns={legal_columnn  }
+            columns={legal_columnn}
             dataSource= {legal_data}
           />
           <br />
