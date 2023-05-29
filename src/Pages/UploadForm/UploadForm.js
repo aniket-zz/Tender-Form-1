@@ -48,7 +48,6 @@ const config = {
 const UploadForm = (props) => {
   const navigate = useNavigate();
   var links = {};
-
   const [form] = Form.useForm();
   const onFinish = async () => {
     // making a request to server
@@ -61,7 +60,7 @@ const UploadForm = (props) => {
     const usrToken = localStorage.getItem("token");
     console.log(reqObj);
 
-    const resp = customFetch.post("/result", {links: JSON.stringify(reqObj)}, {
+    const resp = customFetch.post("/result", {links: JSON.stringify(reqObj), type: props.formValue.TenderType}, {
       headers: {
         authorization: `Bearer ${usrToken}`,
       },
