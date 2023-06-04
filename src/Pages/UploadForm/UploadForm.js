@@ -49,32 +49,27 @@ console.log(process.env.REACT_APP_REGION);
 const UploadForm = (props) => {
   const navigate = useNavigate();
   var links = {};
-
   const [form] = Form.useForm();
   const onFinish = async () => {
     // making a request to server
-    console.log('submitting ... ');
-    const reqObj = {
-      ...links,
-      attorney_nit_desc:
-        "Hiring of HEMMs (Shovels, Dumpers, Drills, Dozers, Graders, Fog Canons etc.) for transfer & transportation of materials in various strata including drilling, excavation, dumping, spreading, dozing and other allied works in specified areas for dumping for exposing various coal seams from surface, down to seam II B at Ananta OCP as per the instructions of Project Officer/Management of Ananta OCP, Jagannath Area, MCL,",
-    };
+    console.log("submitting ... ");
     const usrToken = localStorage.getItem("token");
-    console.log(reqObj);
+    // console.log(props.formValue.TenderType);
+    // console.log(reqObj);
 
-    const resp = customFetch.post("/result", {links: JSON.stringify(reqObj)}, {
-      headers: {
-        authorization: `Bearer ${usrToken}`,
-      },
-    });
-    if (resp.data === "0")
-    {
+    const resp = customFetch.post(
+      "/result",
+      { links: JSON.stringify(links), type: props.formValue.TenderType },
+      {
+        headers: {
+          authorization: `Bearer ${usrToken}`,
+        },
+      }
+    );
+    if (resp.data === "0") {
       message.error("Something went wrong ! Please try again");
       navigate("/upload")
-    }
-      
-    else
-    {
+    } else {
       message.success("Request successfull ! See reports section for result");
       navigate("/Success")
     }
@@ -331,6 +326,57 @@ const UploadForm = (props) => {
             labelCol={{ span: "13", offset: "0" }}
           >
             <Upload name="dsc_link" {...prop} customRequest={handleUpload}>
+              <Button icon={<UploadOutlined />}>Click to upload</Button>
+            </Upload>
+          </Form.Item>
+
+          {/* ---------------UNDERTAKING DOCUMENT ------------------- */}
+          <Form.Item
+            name="Undertaking Document"
+            label="Undertaking Dcocument"
+            rules={[
+              {
+                required: true,
+                message: "Please upload undertaking document",
+              },
+            ]}
+            labelCol={{ span: "13", offset: "0" }}
+          >
+            <Upload name="under_link" {...prop} customRequest={handleUpload}>
+              <Button icon={<UploadOutlined />}>Click to upload</Button>
+            </Upload>
+          </Form.Item>
+
+          {/* ---------------NIT DOCUMENT------------------- */}
+          <Form.Item
+            name="NIT Document"
+            label="NIT Document"
+            rules={[
+              {
+                required: true,
+                message: "Please upload NIT document",
+              },
+            ]}
+            labelCol={{ span: "13", offset: "0" }}
+          >
+            <Upload name="nit_link" {...prop} customRequest={handleUpload}>
+              <Button icon={<UploadOutlined />}>Click to upload</Button>
+            </Upload>
+          </Form.Item>
+
+          {/* ---------------GTC DOCUMENT------------------- */}
+          <Form.Item
+            name="GTC Document"
+            label="GTC Document"
+            rules={[
+              {
+                required: true,
+                message: "Please upload GTC Document",
+              },
+            ]}
+            labelCol={{ span: "13", offset: "0" }}
+          >
+            <Upload name="gtc_link" {...prop} customRequest={handleUpload}>
               <Button icon={<UploadOutlined />}>Click to upload</Button>
             </Upload>
           </Form.Item>

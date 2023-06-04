@@ -175,11 +175,11 @@ const DetailsForm = (props) => {
               options={[
                 {
                   label: "CIVIL",
-                  value: "CIVIL",
+                  value: "civil",
                 },
                 {
                   label: "CMC",
-                  value: "CMC",
+                  value: "cmc",
                 },
               ]}
             />
