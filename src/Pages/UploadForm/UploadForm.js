@@ -45,6 +45,7 @@ const config = {
   secretAccessKey: process.env.REACT_APP_SECRET_ACCESS_KEY,
 };
 
+console.log(process.env.REACT_APP_REGION);
 const UploadForm = (props) => {
   const navigate = useNavigate();
   var links = {};

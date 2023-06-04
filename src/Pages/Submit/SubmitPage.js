@@ -373,7 +373,7 @@ const SubmitPage = (props) => {
   //-----------------------Calculations Part---------------------
 
   //-------COST OF WORK------------
-  const costOfWork = 0.8 * reports?.workcap; // 80 % Cost of work in original Notice
+  const costOfWork = 0.5 * reports?.workcap; // 80 % Cost of work in original Notice
   const sum = TurnOver?.reduce((a, b) => a + parseInt(b, 10), 0);
   const meanTurnover = sum / TurnOver.length || 0;
 
@@ -492,7 +492,11 @@ const SubmitPage = (props) => {
           onFinishFailed={onFinishFailed}
           autoComplete="off"
         >
-          {status==="0" ? Check() : <Alert
+          {status==="0" ? <Alert
+            message="Bid Under Review!"
+            description="Your bid is being processed. Please wait patiently.!"
+            type="info"
+          /> : <Alert
             message="Bid Under Review!"
             description="Your bid is being processed. Please wait patiently.!"
             type="info"
