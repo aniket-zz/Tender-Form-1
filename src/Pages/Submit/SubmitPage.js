@@ -1,18 +1,13 @@
-import React from "react";
-import { useEffect, useState } from "react";
-// import DetailsForm from "../DetailsForm/DetailsForm";
+import React, { useEffect, useState } from "react";
 import { Button, Form, Alert, message } from "antd";
 import handleSubmit from "../../controllers/handleSubmit";
-// import details from "./Information.js";
 import { useNavigate } from "react-router-dom";
 import customFetch from "../../utils/axios";
-
 import { Table } from "antd";
 
 const SubmitPage = (props) => {
   const navigate = useNavigate();
   const usrToken = localStorage.getItem("token");
-
   /**
    * 0 indicates that bid is processed
    * 1 indicates bid is currenntly processing 
@@ -52,7 +47,7 @@ const SubmitPage = (props) => {
             },
           });
           console.log(resp);
-          if (resp.data.status === "0") {
+          if (resp.data.status === "1") {
             const arr = {
               details: resp.data.details,
               reports: resp.data.reports,
@@ -68,25 +63,27 @@ const SubmitPage = (props) => {
       getDetails();
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
+    [ ]
   );
-
-  const details = info.details ? JSON.parse(info.details) : undefined;
+  
+  const details = info?.details ? JSON.parse(info?.details) : undefined;
   console.log(info);
 
   const columns = details
     ? [
         {
-          title: "Basic Details",
-          align: "left",
+          title: "BASIC DETAILS",
+          align: "center",
           children: [
             {
-              title: "Detail",
+              title: "DETAIL",
               dataIndex: "detail",
               key: "detail",
+              className: "DetailsClass",
+              align: "left"
             },
             {
-              title: "value",
+              title: "VALUE",
               dataIndex: "value",
               key: "value",
             },
@@ -178,50 +175,81 @@ const SubmitPage = (props) => {
     },
   ]: {};
 
-  //--------------------------------Legal----------------------------------
+  //--------------------------------Report----------------------------------
   const reports = info.reports ? JSON.parse(info.reports) : {};
+  console.log(reports);
+  
+
   const Legal = reports.legal ? reports.legal : undefined;
+ 
+
+  //-------------------------------CIVIL-----------------------------------
+
 
   const legal_columnn = [
     {
-      title: "Legal",
-      align: "left",
+      title: "LEGAL DATA",
+      align: "center",
       children: [
         {
-          title: "Name",
+          title: "DETAIL",
           dataIndex: "name",
           key: "name",
           onCell: (_, index) => ({
-            colSpan: index === 0 ? 2 : 1,
+            // colSpan: index === 2 ? 2 : 1,
+            align: index === 2 ? "left" : "left"
           }),
+          className: "DetailsClass"
         },
         {
-          title: "Value",
+          title: "VALUE",
           dataIndex: "value",
           key: "value",
           onCell: (_, index) => ({
-            colSpan: index === 0 ? 0 : 1,
+            // colSpan: index === 2 ? 0 : 1,
+            className: index === 2 ? "DetailsClass" : "",
           }),
         },
       ],
     },
   ];
-
   const legal_data = Legal
-    ? [
+    ? Legal.JV ? [
         {
-          name: "Partnership",
-          key: "partnership",
+          name: "Joint Venture",
+          value: "YES",
+          key: "jointVenture",
         },
+        {
+          name: "Joint Venture Name",
+          value: Legal.name,
+          key:"JVName"
+        },
+         {
+          name: "PARTNER'S NAME",
+          value: "SHARE (%)",
+          key:"partners"
+        },
+
         ...Object.entries(Legal?.partners).map(([key, val], index) => ({
           key: index,
           name: key,
-          value: val * 100 + "%",
+          value: index === 1 ? val * 100 - 20 + "%" : val * 100 + "%",
         })),
         {
           key: "lead",
-          name: "Lead",
+          name: "Lead Partner Name",
           value: Legal?.lead,
+        },
+        {
+          name: "Joint Venture Formation date",
+          value: Legal['formation date'],
+          key: "formationDate"
+        } 
+      ] : [
+        {
+          name : "Single Bidder", 
+          key:"singleBidder"
         },
       ]
     : {};
@@ -311,23 +339,82 @@ const SubmitPage = (props) => {
       ]
     : undefined;
 
+  //-----------------------NIT Description--------------------
+  
+  const NIT = reports.nit_desc ? reports.nit_desc : undefined;
+  const nit_column = [
+    {
+      title: "NIT DOCUMENT",
+      align: "center",
+      children: [
+        {
+          title: "DETAIL",
+          dataIndex: "details",
+          key: "details",
+          className: "DetailsClass",
+        },
+        {
+          title: "VALUE",
+          dataIndex: "value",
+          key: "value",
+        },
+      ]
+    }  
+  ];
+
+
+  const nit_data = NIT ? [
+    {
+      key: 1,
+      details: "Work Description",
+      value: NIT['Work Description']
+    },
+    {
+      key: 2,
+      details: "Bid Start Date",
+      value: NIT['Bid Start Date']
+    },
+    {
+      key: 3,
+      details: "Bid End Date",
+      value: NIT['Bid End Date']
+    },
+    {
+      key: 4,
+      details: "Cost of Work",
+      value: NIT['Cost of Work']
+    },
+    {
+      key: 5,
+      details: "Period of Completion (Days)",
+      value: NIT['Period of Completion (Days)'] + " days"
+    },
+    {
+      key: 6,
+      details: "Tender Publication Date",
+      value: NIT['Tender Publication Data']
+    }
+  ]: [];
+
   //-----------------------Other Part--------------------------
 
   const other_column = [
     {
-      title: "Details",
+      title: "DETAIL",
       dataIndex: "details",
       key: "details",
+      className: "DetailsClass",
       onCell: (_, index) => ({
-        colSpan: index === 0 ? 2 : 1,
+        colSpan: index === 6 ? 2 : 1,
+        align: index === 6 ? "left": "left",
       }),
     },
     {
-      title: "Value",
+      title: "VALUE",
       dataIndex: "value",
       key: "value",
       onCell: (_, index) => ({
-        colSpan: index === 0 ? 0 : 1,
+        colSpan: index === 6? 0 : 1,
       }),
     },
   ];
@@ -335,47 +422,65 @@ const SubmitPage = (props) => {
   const other_data = reports.pan
     ? [
         {
-          key: 1,
-          details: "PAN",
-        },
-        ...Object.values(reports?.pan).map((each, index) => ({
-          key: index + 7,
-          value: each,
-        })),
-        {
           key: 2,
-          details: "GSTIN",
+          details: "GSTIN Number",
           value: reports?.gstin,
         },
         {
           key: 3,
           details: "Power Of Attorny",
-          value: reports?.attorney,
+          value: reports?.attorney.attorney,
         },
         {
           key: 4,
+          details: "Work Simiarity",
+          value: Math.floor(reports.attorney['work similarity'] * 10000)/100 + " %"
+        },
+
+        {
+          key: 5,
           details: "Digital Signature",
           value: reports?.dsc,
         },
         {
-          key: 5,
-          details: "Workcap (Rs)",
-          value: reports?.workcap,
+          key: 6,
+          details: "Workcap (Cr)",
+          value: reports?.workcap['Working Capital'] / 1000000000 + " Cr",
         },
         {
-          key: 6,
+          key: 7,
           details: "Similar Work",
           value: reports?.similar_work ? "YES" : "NO",
         },
+        {
+          key: 1,
+          details: "PAN Details of Partners",
+        },
+        ...Object.values(reports?.pan).map((each, index) => ({
+          key: index + 8,
+          details: "Patner " + (index+ 1) ,
+          value: each,
+        })),
+        {
+          key: 11,
+          details: "UDIN Number",
+          value: reports?.workcap['UDIN No']
+        },
+        {
+          key: 12,
+          details: "Undertaking",
+          value: Math.floor(reports.undertaking * 10000)/100,
+        }
       ]
     : {};
 
   //-----------------------Calculations Part---------------------
 
   //-------COST OF WORK------------
-  const costOfWork = 0.5 * reports?.workcap; // 80 % Cost of work in original Notice
-  const sum = TurnOver?.reduce((a, b) => a + parseInt(b, 10), 0);
-  const meanTurnover = sum / TurnOver.length || 0;
+  const costOfWork = NIT ? 0.5 * NIT['Cost of Work'] : 0; // 50 % Cost of work in original Notice
+  // const sum = TurnOver?.reduce((a, b) => a + parseInt(b, 10), 0);
+  // const meanTurnover = sum / TurnOver.length || 0;
+  const meanTurnover = reports.workcap ? reports?.workcap['Working Capital'] : 0;
 
   // //--------Joint venture------------
   const numOfBidders = Legal?.partners
@@ -385,10 +490,18 @@ const SubmitPage = (props) => {
     ? Math.max(...Object.values(Legal?.partners))
     : 0;
   const leastShare = Legal?.partners
-    ? Math.min(...Object.values(Legal?.partners))
+    ? Math.min(...Object.values(Legal?.partners)) - 0.20
     : 0;
 
   function Check() {
+    if(costOfWork === 0 || meanTurnover === 0){
+      <Alert
+          message="Bid Under Review!"
+          description="Your Bid is under review, login after sometime."
+          type="info"
+        />
+        return
+    }
     if (meanTurnover < costOfWork) {
       return (
         <Alert
@@ -451,23 +564,38 @@ const SubmitPage = (props) => {
         Bidder Details
       </p>
       <div className="submit_div">
-        {status === "0" ? (
+        {status === "1" ? (
           <div>
-            <Table bordered={true} columns={columns} dataSource={data} />
+            <Table pagination={false} bordered={true} columns={columns} dataSource={data} />
+            <br />
             <br />
             <Table
               bordered={true}
+              pagination={false}
               columns={legal_columnn}
               dataSource={legal_data}
             />
+            <br/>
+            <br/>
+            <Table
+              bordered = {true}
+              pagination={false}
+              columns={nit_column}
+              dataSource={nit_data}
+            />
+
+            {/* <br />
+            <Table bordered={true} columns={ca_columnn} dataSource={ca_data} /> */}
             <br />
-            <Table bordered={true} columns={ca_columnn} dataSource={ca_data} />
             <br />
             <Table
               bordered={true}
+              pagination={false}
               columns={other_column}
               dataSource={other_data}
             />
+            <br/>
+            <br/>
           </div>
         ) : (
           console.log("Bid Under Review!")
@@ -492,13 +620,9 @@ const SubmitPage = (props) => {
           onFinishFailed={onFinishFailed}
           autoComplete="off"
         >
-          {status==="0" ? <Alert
+          {status==="1" ? Check(): <Alert
             message="Bid Under Review!"
-            description="Your bid is being processed. Please wait patiently.!"
-            type="info"
-          /> : <Alert
-            message="Bid Under Review!"
-            description="Your bid is being processed. Please wait patiently.!"
+            description="Your bid is under evaluation."
             type="info"
           />}
 
