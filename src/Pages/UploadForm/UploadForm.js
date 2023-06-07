@@ -193,7 +193,7 @@ const UploadForm = (props) => {
           </Form.Item>
 
           {/* ---------------CA CERTIFICATE------------------- */}
-          <Form.Item
+          {props.formValue.TenderType === "CMC"? null : <Form.Item
             name="ca_link"
             label="CA Certificate of the bidder"
             rules={[
@@ -206,23 +206,13 @@ const UploadForm = (props) => {
           >
             <Upload
               name="ca_link"
-              // customRequest={(e) => {
-              //   var formData = new FormData();
-              //   var doc = e.file;
-              //   console.log(doc);
-              //   formData.append("GSTIN", doc);
-              //   axios.post("https://reqres.in/api/users", formData, {
-              //     headers: {
-              //       "Content-Type": "multipart/form-data",
-              //     },
-              //   });
-              // }}
               {...prop}
               customRequest={handleUpload}
             >
               <Button icon={<UploadOutlined />}>Click to upload</Button>
             </Upload>
-          </Form.Item>
+          </Form.Item>}  
+          
 
           {/* ---------------PAN CERTIFICATE------------------- */}
           <Form.Item

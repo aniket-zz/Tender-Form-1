@@ -47,7 +47,7 @@ const SubmitPage = (props) => {
             },
           });
           console.log(resp);
-          if (resp.data.status === "1") {
+          if (resp.data.status === "0") {
             const arr = {
               details: resp.data.details,
               reports: resp.data.reports,
@@ -381,8 +381,8 @@ const SubmitPage = (props) => {
     },
     {
       key: 4,
-      details: "Cost of Work",
-      value: NIT['Cost of Work']
+      details: "Cost of Work (Cr)",
+      value: NIT['Cost of Work']/10000000 + " Cr"
     },
     {
       key: 5,
@@ -436,7 +436,11 @@ const SubmitPage = (props) => {
           details: "Work Simiarity",
           value: Math.floor(reports.attorney['work similarity'] * 10000)/100 + " %"
         },
-
+        {
+          key: 7,
+          details: "Similar Work",
+          value: reports.attorney['work similarity'] > 0.95? "Yes" : "No",
+        },
         {
           key: 5,
           details: "Digital Signature",
@@ -447,11 +451,7 @@ const SubmitPage = (props) => {
           details: "Workcap (Cr)",
           value: reports?.workcap['Working Capital'] / 1000000000 + " Cr",
         },
-        {
-          key: 7,
-          details: "Similar Work",
-          value: reports?.similar_work ? "YES" : "NO",
-        },
+        
         {
           key: 1,
           details: "PAN Details of Partners",
@@ -564,7 +564,7 @@ const SubmitPage = (props) => {
         Bidder Details
       </p>
       <div className="submit_div">
-        {status === "1" ? (
+        {status === "0" ? (
           <div>
             <Table pagination={false} bordered={true} columns={columns} dataSource={data} />
             <br />
@@ -620,7 +620,7 @@ const SubmitPage = (props) => {
           onFinishFailed={onFinishFailed}
           autoComplete="off"
         >
-          {status==="1" ? Check(): <Alert
+          {status==="0" ? Check(): <Alert
             message="Bid Under Review!"
             description="Your bid is under evaluation."
             type="info"

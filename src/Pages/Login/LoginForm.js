@@ -156,6 +156,9 @@ const LoginForm = (props) => {
             <Button type="primary" htmlType="submit">
               Register
             </Button>
+            <Button type="primary" htmlType="submit" style={{marginLeft: "15px"}}>
+              Login
+            </Button>
           </Form.Item>
         </Form>
       </div>
