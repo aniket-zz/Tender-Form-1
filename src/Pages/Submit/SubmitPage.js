@@ -603,6 +603,11 @@ const SubmitPage = (props) => {
       status: "NO",
       key: 3
     },
+    {
+      query: "For a JV, each partner have a partnership share of greater than or equal to 20%",
+      status: "NO",
+      key: 4
+    }
   ] : {};
 
   //-----------------------Calculations Part---------------------

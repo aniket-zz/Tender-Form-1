@@ -52,8 +52,7 @@ const tailFormItemLayout = {
 };
 
 // const url = "http://localhost:5000/register";  // Backend endpoint earlier used
-
-const url = "https://reqres.in/api/users"; // API endpoint to be entered here
+ // API endpoint to be entered here
 
 const DetailsForm = (props) => {
   const navigate = useNavigate();

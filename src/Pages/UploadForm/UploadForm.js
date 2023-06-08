@@ -193,7 +193,7 @@ const UploadForm = (props) => {
           </Form.Item>
 
           {/* ---------------CA CERTIFICATE------------------- */}
-          {props.formValue.TenderType === "CMC"? null : <Form.Item
+          {props.formValue.TenderType === "cmc"? null : <Form.Item
             name="ca_link"
             label="CA Certificate of the bidder"
             rules={[
