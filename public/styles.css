@@ -72,6 +72,8 @@ body {
     padding-left: 2.5rem;
 }
 
+/*----------- Submit page table design -----------*/
+
 .DetailsClass {
     font-weight: 600; 
     background-color: #f5f4f4;
@@ -81,18 +83,23 @@ body {
     color: #262626;
     background-color: rgb(255, 252, 245);
 }
-.ant-table-wrapper .ant-table-thead > tr > th.BasicDetails {
+.ant-table-wrapper .ant-table-thead > tr > th.tableHeading {
     background-color: #F5A962;
     color: white;
     font-size: 1rem;
 }
 .ant-table-wrapper .ant-table-thead > tr > th {
-    background-color: #ffe1c6;
+    background-color: #efe5de;
     border: none;
 }
 
 .ant-table-wrapper .ant-table-tbody > tr > td, .ant-table-wrapper .ant-table-thead > tr > th {
     padding: 12px;
+}
+
+.ant-table-wrapper .ant-table-tbody > tr > td.detailValue {
+    background-color: #fff5e4;
+    font-weight: 600;
 }
 
 h3 {
@@ -103,7 +110,7 @@ h3 {
     font-size: 1.5rem;
 }
 
-/* Submit page table design*/
+
 
 input,
 select,

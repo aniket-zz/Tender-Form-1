@@ -4,6 +4,7 @@ import handleSubmit from "../../controllers/handleSubmit";
 import { useNavigate } from "react-router-dom";
 import customFetch from "../../utils/axios";
 import { Table, ConfigProvider } from "antd";
+import CMCdata from "./Information";
 
 const SubmitPage = (props) => {
   const navigate = useNavigate();
@@ -75,7 +76,7 @@ const SubmitPage = (props) => {
           title: "BASIC DETAILS",
           align: "center",
           key: "basicdetails",
-          className: "BasicDetails",
+          className: "tableHeading",
           children: [
             {
               title: "DETAIL",
@@ -192,26 +193,25 @@ const SubmitPage = (props) => {
     {
       title: "LEGAL DATA",
       align: "center",
-      className: "BasicDetails",
+      className: "tableHeading",
       children: [
         {
           title: "DETAIL",
           dataIndex: "name",
           key: "name",
           onCell: (_, index) => ({
-            // colSpan: index === 2 ? 2 : 1,
-            align: index === 2 ? "left" : "left",
+            colSpan: (index === 2 ||index === 8) ? 2 : 1,
+            className: index === 2 ? "detailValue" : "DetailsClass",
           }),
-          className: "DetailsClass",
         },
+        
         {
           title: "VALUE",
           dataIndex: "value",
           key: "value",
           className: "tableValues",
           onCell: (_, index) => ({
-            // colSpan: index === 2 ? 0 : 1,
-            className: index === 2 ? "DetailsClass" : "",
+            colSpan: (index === 2 ||index === 8) ? 0 : 1,
           }),
         },
       ],
@@ -231,9 +231,9 @@ const SubmitPage = (props) => {
             key: "JVName",
           },
           {
-            name: "PARTNER'S NAME",
-            value: "SHARE (%)",
+            name: "Partner's Name and Share (%)",
             key: "partners",
+           
           },
 
           ...Object.entries(Legal?.partners).map(([key, val], index) => ({
@@ -248,9 +248,13 @@ const SubmitPage = (props) => {
           },
           {
             name: "Joint Venture Formation date",
-            value: Legal["formation date"],
+            value: CMCdata.JointVenture.formationDate,
             key: "formationDate",
           },
+          {
+            name: "Name of the Joint Venture reamined same throughout the document.",
+            key: "nameofJV"
+          }
         ]
       : [
           {
@@ -270,80 +274,80 @@ const SubmitPage = (props) => {
 
   // //------------------------------CA---------------------------------
 
-  const CA = reports.relevent_work_experience
-    ? {
-        udin: reports?.udin,
-        ca_name: reports?.ca_name,
-        companyAudited: reports?.company_audited,
-        workType: reports?.type_of_work,
-        relevantWorkExperience: reports?.relevent_work_experience,
-      }
-    : undefined;
+  // const CA = reports.relevent_work_experience
+  //   ? {
+  //       udin: reports?.udin,
+  //       ca_name: reports?.ca_name,
+  //       companyAudited: reports?.company_audited,
+  //       workType: reports?.type_of_work,
+  //       relevantWorkExperience: reports?.relevent_work_experience,
+  //     }
+  //   : undefined;
 
-  const ca_columnn = [
-    {
-      title: "CA Info",
-      align: "left",
-      children: [
-        {
-          title: "Name",
-          dataIndex: "name",
-          key: "name",
-          onCell: (_, index) => ({
-            colSpan: index === 4 ? 2 : 1,
-          }),
-        },
-        {
-          title: "Value",
-          dataIndex: "value",
-          key: "value",
-          onCell: (_, index) => ({
-            colSpan: index === 4 ? 0 : 1,
-          }),
-        },
-      ],
-    },
-  ];
+  // const ca_columnn = [
+  //   {
+  //     title: "CA Info",
+  //     align: "left",
+  //     children: [
+  //       {
+  //         title: "Name",
+  //         dataIndex: "name",
+  //         key: "name",
+  //         onCell: (_, index) => ({
+  //           colSpan: index === 4 ? 2 : 1,
+  //         }),
+  //       },
+  //       {
+  //         title: "Value",
+  //         dataIndex: "value",
+  //         key: "value",
+  //         onCell: (_, index) => ({
+  //           colSpan: index === 4 ? 0 : 1,
+  //         }),
+  //       },
+  //     ],
+  //   },
+  // ];
 
-  const TurnOver = CA
-    ? Object.values(CA?.relevantWorkExperience).map((each) => {
-        return each["Gross Turn Over"];
-      })
-    : [];
+  // const TurnOver = CA
+  //   ? Object.values(CA?.relevantWorkExperience).map((each) => {
+  //       return each["Gross Turn Over"];
+  //     })
+  //   : [];
 
-  const ca_data = CA
-    ? [
-        {
-          key: "ca_name",
-          name: "CA Name",
-          value: CA?.ca_name,
-        },
-        {
-          key: "udin",
-          name: "UDIN",
-          value: CA?.udin,
-        },
-        {
-          key: "companyAudited",
-          name: "Company Audited",
-          value: CA?.companyAudited,
-        },
-        {
-          key: "workType",
-          name: "Work Type",
-          value: CA?.workType,
-        },
-        {
-          key: "workExp",
-          name: "Relevant Work Experience",
-        },
-        ...Object.values(CA?.relevantWorkExperience).map((each, index) => ({
-          key: index,
-          name: each["Financial Year"],
-          value: each["Gross Turn Over"],
-        })),
-      ]
-    : undefined;
+  // const ca_data = CA
+  //   ? [
+  //       {
+  //         key: "ca_name",
+  //         name: "CA Name",
+  //         value: CA?.ca_name,
+  //       },
+  //       {
+  //         key: "udin",
+  //         name: "UDIN",
+  //         value: CA?.udin,
+  //       },
+  //       {
+  //         key: "companyAudited",
+  //         name: "Company Audited",
+  //         value: CA?.companyAudited,
+  //       },
+  //       {
+  //         key: "workType",
+  //         name: "Work Type",
+  //         value: CA?.workType,
+  //       },
+  //       {
+  //         key: "workExp",
+  //         name: "Relevant Work Experience",
+  //       },
+  //       ...Object.values(CA?.relevantWorkExperience).map((each, index) => ({
+  //         key: index,
+  //         name: each["Financial Year"],
+  //         value: each["Gross Turn Over"],
+  //       })),
+  //     ]
+  //   : undefined;
 
   //-----------------------NIT Description--------------------
 
@@ -352,7 +356,7 @@ const SubmitPage = (props) => {
     {
       title: "NIT DOCUMENT",
       align: "center",
-      className: "BasicDetails",
+      className: "tableHeading",
       children: [
         {
           title: "DETAIL",
@@ -389,7 +393,7 @@ const SubmitPage = (props) => {
         },
         {
           key: 4,
-          details: "Cost of Work (Cr)",
+          details: "Estimated Cost of Work (Cr)",
           value: NIT["Cost of Work"] / 10000000 + " Cr",
         },
         {
@@ -405,6 +409,53 @@ const SubmitPage = (props) => {
       ]
     : [];
 
+  //----------------------Working Capital --------------------
+  const workCap_Column = [
+    {
+      title: "WORKING CAPITAL DOCUMENT",
+      key: "workincapital",
+      className: "tableHeading",
+      children: [
+        {
+          title: "DETAIL",
+          key: "details",
+          dataIndex: "details",
+          className: "DetailsClass"
+        },
+        {
+          title: "VALUE",
+          key: "value",
+          dataIndex: "value",
+          className: "tableValues"
+        }
+
+      ]
+    }
+  ]
+
+  const workCap_data = reports.pan?  [
+    {
+      details: "Document type",
+      value: CMCdata.workingCapital.docType,
+      key: 1
+    },
+    {
+      details: "Document Issued date",
+      value: CMCdata.workingCapital.IssuedDate,
+      key: 2
+    },
+    {
+      details: "Working Capital Fund Date",
+      value: CMCdata.workingCapital.FundDate,
+      key: 3
+    },
+    {
+      details: "Working Capital (Cr)",
+      value: reports?.workcap["Working Capital"] / 1000000000 + " Cr",
+      key: 4
+    }
+
+  ]: {};
   //-----------------------Other Part--------------------------
 
   const other_column = [
@@ -412,10 +463,9 @@ const SubmitPage = (props) => {
       title: "DETAIL",
       dataIndex: "details",
       key: "details",
-      className: "DetailsClass",
       onCell: (_, index) => ({
-        colSpan: index === 6 ? 2 : 1,
-        align: index === 6 ? "left" : "left",
+        colSpan: index === 5 ? 2 : 1,
+        className: index === 5 ? "detailValue" : "DetailsClass"
       }),
     },
     {
@@ -424,17 +474,18 @@ const SubmitPage = (props) => {
       key: "value",
       className: "tableValues",
       onCell: (_, index) => ({
-        colSpan: index === 6 ? 0 : 1,
+        colSpan: index === 5 ? 0 : 1,
       }),
     },
   ];
 
+  console.log(Object.entries(CMCdata.pan));
   const other_data = reports.pan
     ? [
         {
           key: 2,
           details: "GSTIN Number",
-          value: reports?.gstin,
+          value: reports?.gstin + " (verified)",
         },
         {
           key: 3,
@@ -459,42 +510,112 @@ const SubmitPage = (props) => {
           value: reports?.dsc,
         },
         {
-          key: 6,
-          details: "Workcap (Cr)",
-          value: reports?.workcap["Working Capital"] / 1000000000 + " Cr",
-        },
-
-        {
           key: 1,
           details: "PAN Details of Partners",
         },
-        ...Object.values(reports?.pan).map((each, index) => ({
+        ...Object.entries(CMCdata.pan).map((each, index) => ({
           key: index + 8,
-          details: "Patner " + (index + 1),
-          value: each,
+          details: each[0],
+          value: each[1],
         })),
         {
           key: 11,
           details: "UDIN Number",
-          value: reports?.workcap["UDIN No"],
-        },
-        {
-          key: 12,
-          details: "Undertaking",
-          value: Math.floor(reports.undertaking * 10000) / 100,
+          value: reports?.workcap["UDIN No"] ,
         },
       ]
     : {};
 
+  //----------------------Undertaking Document-------------------
+   const undertaking_column = [
+    {
+      title: "UNDERTAKING DOCUMENT",
+      key: "undertaking",
+      className: "tableHeading",
+      children: [
+        {
+          title: "DETAIL",
+          key: "details",
+          dataIndex: "details",
+          className: "DetailsClass"
+        },
+        {
+          title: "VALUE",
+          key: "value",
+          dataIndex: "value",
+          className: "tableValues"
+        }
+
+      ]
+    }
+   ];
+
+   const undertaking_data = reports.undertaking? [
+    {
+      details: "Relatives",
+      key: 1,
+      value: CMCdata.Undertaking.realtives
+    },
+    {
+      key: 2,
+      details: "Undertaking",
+      value: "Undertaking matches with accuracy of " + Math.floor(reports.undertaking * 10000) / 100 + " %",
+    },
+   ]: {};
+
+  //----------------------Check Part---------------------------
+  const check_column = [
+    {
+      title:"CHECKS",
+      dataIndex: "check",
+      key: "check",
+      className: "tableHeading",
+      children: [
+        {
+          title: "QUERY",
+          key: "query",
+          dataIndex: "query",
+          className: "DetailsClass"
+        },
+        {
+          title: "STATUS",
+          key: "status",
+          dataIndex: "status",
+          className: "tableValues"
+        }
+      ]
+    }
+  ]
+
+  const check_data = reports.legal ? [
+    {
+      query: "Name of the Joint Venture reamined same throughout the document?",
+      status: "YES",
+      key: 1
+    },
+    {
+      query: "Bidder's Income is within 3 months of the Tender Issued date?",
+      status: "YES",
+      key: 2
+    },
+    {
+      query: "Number of Bidders is greater than 3 in JV?",
+      status: "NO",
+      key: 3
+    },
+  ] : {};
+
   //-----------------------Calculations Part---------------------
 
   //-------COST OF WORK------------
-  const costOfWork = NIT ? 0.5 * NIT["Cost of Work"] : 0; // 50 % Cost of work in original Notice
+  const costOfWork = NIT ? NIT["Cost of Work"] : 0; // 50 % Cost of work in original Notice
   // const sum = TurnOver?.reduce((a, b) => a + parseInt(b, 10), 0);
   // const meanTurnover = sum / TurnOver.length || 0;
+  const halfAnnualTenderValue = NIT ? 0.5 * ((costOfWork * 365) / NIT["Period of Completion (Days)"] ): 0;
   const meanTurnover = reports.workcap
     ? reports?.workcap["Working Capital"]
     : 0;
+
 
   // //--------Joint venture------------
   const numOfBidders = Legal?.partners
@@ -508,7 +629,7 @@ const SubmitPage = (props) => {
     : 0;
 
   function Check() {
-    if (costOfWork === 0 || meanTurnover === 0) {
+    if (costOfWork === 0 || meanTurnover === 0 || halfAnnualTenderValue === 0) {
       <Alert
         message="Bid Under Review!"
         description="Your Bid is under review, login after sometime."
@@ -516,11 +637,11 @@ const SubmitPage = (props) => {
       />;
       return;
     }
-    if (meanTurnover < costOfWork) {
+    if (meanTurnover < halfAnnualTenderValue) {
       return (
         <Alert
           message="Bid Cancelled!"
-          description="Mean Turnover is less than tha Cost Of Work in Original Notice"
+          description="Mean Turnover is less than tha Cost Of Work in NIT"
           type="error"
         />
       );
@@ -615,9 +736,25 @@ const SubmitPage = (props) => {
                   columns={nit_column}
                   dataSource={nit_data}
                 />
+                <br />
+                <br />
+                <Table
+                  bordered={true}
+                  pagination={false}
+                  columns={workCap_Column}
+                  dataSource={workCap_data}
+                />
 
                 {/* <br />
                 <Table bordered={true} columns={ca_columnn} dataSource={ca_data} /> */}
+                <br />
+                <br />
+                <Table
+                  bordered={true}
+                  pagination={false}
+                  columns={undertaking_column}
+                  dataSource={undertaking_data}
+                />
                 <br />
                 <br />
                 <Table
@@ -628,6 +765,15 @@ const SubmitPage = (props) => {
                 />
                 <br />
                 <br />
+                <Table
+                  bordered={true}
+                  pagination={false}
+                  columns={check_column}
+                  dataSource={check_data}
+                />
+                <br />
+                <br />
+                
               </div>
             ) : (
               console.log("Bid Under Review!")
