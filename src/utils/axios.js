@@ -2,7 +2,7 @@ import axios from "axios";
 
 const customFetch = axios.create({
   // baseURL: "http://172.24.221.37:5000",
-  baseURL: "http://18.214.36.46",
+  baseURL: "http://16.171.136.203",
   headers: {
     "Content-Type": "application/json",
   },

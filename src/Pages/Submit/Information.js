@@ -1,63 +1,116 @@
-// const Details = [
-//   {
-//     caNumber: "V.A. & Associates",
-//     udinNo: "20401781AAAACG1267",
-//     companyAudited: "M/s Aaditya Construction",
-//     relevantWorkExperience: {
-//       year: ["2016-2017", "2017-2018", "2018-2019", "2019-2020"],
-//       turnover: [
-//         "174292739.00",
-//         "160940092.00",
-//         "203045386.00",
-//         "170954252.00",
-//       ],
-//     },
-//     workType: "Civil Work",
-//   },
-//   {
-//     partnership: {
-//       "Godawari Natural Resources Private Limited": 0.45,
-//       "Deify Infrastructures Limited": 0.05,
-//       "Square Cargo Movers Private Limited": 0.5,
-//     },
-//     lead: "Square Cargo Movers Private Limited",
-//   }
-// ];
-
 const CMCdata = {
-  workingCapital: {
-    IssuedDate: "23.12.2020",
-    FundDate: "30.11.2020",
-    docType: "Working Capital Certificate",
-  },
-
-  Undertaking: {
-    realtives: "No Relatives in MCL",
-  },
-
-  JointVenture: {
-    formationDate: "23.12.2020",
+  nit_desc: {
+    "Cost of Work": 6365368872.0,
+    "Period of Completion (Days)": 1460,
+    "Work Description":
+      "Hiring of HEMMs (Shovels, Dumpers, Drills, Dozers, Graders, Fog Canons etc.) for transfer & transportation of materials in various strata including drilling, excavation, dumping, spreading, dozing and other allied works in  specified  areas for  dumping for  exposing various coal seams from surface, down to seam II B at Ananta  OCP as per the instructions of Project Officer/Management  of  Ananta  OCP,  Jagannath  Area, MCL, for a quantity of 559,90,000 Cu.M.",
+    "Bid Start Date": "09.12.2020",
+    "Bid End Date": "26.12.2020",
+    "Tender Publication Data": "08.12.2020",
   },
   pan: {
-    'Deify Infrastructures Limited' : 'AAACN4276C',
-    'Godawari Natural Resources Private Limited': 'AADCG3079K',
-    'S Square Cargo Movers Private Limited':'ABECS3157Q'
-  }
+    "Deify Infrastructures Limited": "AAACN4276C",
+    "Godawari Natural Resources Private Limited": "AADCG3079K",
+    "S Square Cargo Movers Private Limited": "ABECS3157Q",
+  },
+  gstin: ["22AAACN4276CIZX"],
+  attorney: {
+    attorney: "Shri Sailesh Kumar Jaiswal",
+    "work similarity": 0.9955378763598618,
+  },
+  legal: {
+    JV: true,
+    name: "GODAWARI DEIFY SCMPL JV",
+    "formation date": "23.12.2020",
+    partners: {
+      "Godawari Natural Resources Private Limited": 0.45,
+      "Deify Infrastructures Limited": 0.25,
+      "Square Cargo Movers Private Limited": 0.5,
+    },
+    lead: "Square Cargo Movers Private Limited",
+  },
+  dsc: "Mr. Sallesh Kumar Jaiswal",
+  workcap: {
+    "Working Capital": 63590000000.0,
+    "UDIN No": "20527667AAAAAB7132",
+    "Type of document": "working capital certificate",
+    "Date of Issue": "23.12.2020",
+    "Fund date": "30.11.2020",
+    "Document type": "Working Capital Certificate",
+  },
+  undertaking: 0.9712792098035186,
+  realtives: "No Relatives in MCL",
 };
 
 const CIVILdata = {
-  date_issued: "28/12/2020",
+  nit_desc: {
+    "Cost of Work": 112581530.5,
+    "Period of Completion (Days)": 1975,
+    "Work Description": "Construction of black top road from Tikilipada to Barpali Railway station alongside railway line under CSR scheme of Basundhara Area",
+    "Bid Start Date": "24-Jan-2021",
+    "Bid End Date": "11-Feb-2021",
+    "Tender Publication Data": "23-Jan-2021",
+  },
   ca_name: "V.A. & Associates",
+  pan: ["AAPFA5810N"],
+  gstin: ["22AAPFA5390N1Z1"],
+  legal: {
+    JV: true,
+    name: "GODAWARI DEIFY SCMPL JV",
+    "formation date": "23/12/2020",
+    partners: {
+      "Godawari Natural Resources Private Limited,": 0.45,
+      "Deify Infrastructures Limited,": 0.25,
+      "Square Cargo Movers Private Limited.": 0.5,
+    },
+    lead: "Square Cargo Movers Private Limited.",
+  },
   udin: "20401781AAAACG1267",
   company_audited: "M/s Aaditya Construction",
-  type_of_document: "Civil Work",
+  type_of_work: "Civil Work",
   relevent_work_experience: [
     { "Financial Year": "2016-2017", "Gross Turn Over": 17429273900.0 },
     { "Financial Year": "2017-2018", "Gross Turn Over": 160940092.0 },
     { "Financial Year": "2018-2019", "Gross Turn Over": 20304538600.0 },
     { "Financial Year": "2019-2020", "Gross Turn Over": 170954252.0 },
   ],
+  local_content: "Class 1 Supplier",
 };
 
 export default CMCdata;
 export { CIVILdata };
+
+// const CIVILdata = {
+//   ca: {
+//     date_issued: "28/12/2020",
+//     ca_name: "V.A. & Associates",
+//     udin: "20401781AAAACG1267",
+//     company_audited: "M/s Aaditya Construction",
+//     type_of_work: "Civil Work",
+//     relevent_work_experience: [
+//       { "Financial Year": "2016-2017", "Gross Turn Over": 17429273900.0 },
+//       { "Financial Year": "2017-2018", "Gross Turn Over": 160940092.0 },
+//       { "Financial Year": "2018-2019", "Gross Turn Over": 20304538600.0 },
+//       { "Financial Year": "2019-2020", "Gross Turn Over": 170954252.0 },
+//     ],
+//   },
+//   nit_desc: {
+//     "Cost of Work": 112581530.5,
+//     "Period of Completion (Days)": 1975,
+//     "Work Description":
+//       "Construction  of  black top road from Tikilipada to Barpali Railway station alongside railway line under CSR scheme of Basundhara Area",
+//     "Bid Start Date": "24-Jan-2021",
+//     "Bid End Date": "11-Feb-2021",
+//     "Tender Publication Data": "23-Jan-2021",
+//   },
+//   gst: "22AAPFA5390N1Z1",
+//   pan: "AAPFA5390N",
+//   powe_of_attorney: { name: "Mr. Arun Verma", match: 97.6 },
+//   legal: {
+//     JV: false,
+//     name: "M/S Aaditya Construction",
+//     "formation date": "23-10-2008.",
+//     partners: { "M/S Aaditya Construction": 1 },
+//     lead: "M/S Aaditya Construction",
+//   },
+// };

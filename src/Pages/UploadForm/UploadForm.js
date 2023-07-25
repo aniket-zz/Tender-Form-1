@@ -4,7 +4,7 @@ import { UploadOutlined } from "@ant-design/icons";
 import { Button, message, Form, Upload } from "antd";
 import { useNavigate } from "react-router-dom";
 import { uploadFile } from "react-s3";
-// import { Buffer } from "buffer";
+
 
 const formItemLayout = {
   labelCol: {
@@ -45,21 +45,22 @@ const config = {
   secretAccessKey: process.env.REACT_APP_SECRET_ACCESS_KEY,
 };
 
-console.log(process.env.REACT_APP_REGION);
 const UploadForm = (props) => {
   const navigate = useNavigate();
+
   var links = {};
+
   const [form] = Form.useForm();
+
   const onFinish = async () => {
-    // making a request to server
+    
+    //----------- making a request to server---------------
     console.log("submitting ... ");
     const usrToken = localStorage.getItem("token");
-    // console.log(props.formValue.TenderType);
-    // console.log(reqObj);
 
     const resp = customFetch.post(
       "/result",
-      { links: JSON.stringify(links), type: props.formValue.TenderType },
+      { links: JSON.stringify(links), type: props.formValue.TenderType, bid_id: props.id},
       {
         headers: {
           authorization: `Bearer ${usrToken}`,
@@ -67,11 +68,11 @@ const UploadForm = (props) => {
       }
     );
     if (resp.data === "0") {
-      message.error("Something went wrong ! Please try again");
-      navigate("/upload")
+      message.error("Something went wrong! Please try again");
+      navigate("/upload");
     } else {
-      message.success("Request successfull ! See reports section for result");
-      navigate("/Success")
+      message.success("Request successfull! See bidders list for result.");
+      navigate("/Bidders");
     }
   };
 
@@ -100,20 +101,6 @@ const UploadForm = (props) => {
 
   const prop = {
     maxCount: 1,
-
-    // action: "https://reqres.in/api/users", // API endpoint to be entered here
-    // headers: {
-    //   authorization: "authorization-text",
-    // },
-    // onChange(info) {
-    //   if (info.file.status === "done") {
-    //     // message.success(`${info.file.name} file uploaded successfully`);
-    //     console.log("File uploaded!");
-    //   } else if (info.file.status === "error") {
-    //     // message.error(`${info.file.name} file upload failed.`);
-    //     console.log("File upload failed");
-    //   }
-    // },
   };
 
   return (
@@ -132,7 +119,7 @@ const UploadForm = (props) => {
         eTenders Portal (ISM)
       </h3>
       <div className="details_div">
-        <p className="upload_title">Bid Documents</p>
+        <p className="upload_title">Upload Bid Documents</p>
 
         <Form
           {...formItemLayout}
@@ -144,14 +131,14 @@ const UploadForm = (props) => {
           }}
           scrollToFirstError
         >
-          {/* ---------------LEGAL DOCUMENT------------------- */}
+{/* ---------------LEGAL DOCUMENT------------------- */}
           <Form.Item
             name="legal_link"
             label="Legal Document"
             rules={[
               {
                 required: true,
-                message: "Please upload your Leagal Document",
+                message: "Please upload bidder's Leagal Document",
               },
             ]}
             labelCol={{ span: "12", offset: "1" }}
@@ -160,68 +147,38 @@ const UploadForm = (props) => {
               name="legal_link"
               {...prop}
               customRequest={handleUpload}
-
-              // formData.append("PAN", doc);
-              // try{
-              //   let uploadURLRes = await axios.get('http://localhost:5000/getuploadurl');
-              //   let res = await axios.post(uploadURLRes.message, formData, {     // API of the service used to upload the document
-              //   headers: {
-              //     "Content-Type": "multipart/form-data",
-              //   },
-              //   });
-              //   await axios.post('http://localhost:5000/uploaddetails',res)
-
-              // onSuccess(message.success(`${info.file.name} file uploaded successfully`));
-              // }
-              // catch(err){
-              //   console.log("Eroor: ", err);
-              //   onError(`${info.file.name} file upload failed.`);
-              // }
-              // if (info.file.status !== "uploading") {
-              //   console.log(info.file, info.fileList);
-              // }
-              // if (info.file.status === "done") {
-              //   message.success(
-              //     `${info.file.name} file uploaded successfully`
-              //   );
-              // } else if (info.file.status === "error") {
-              //   message.error(`${info.file.name} file upload failed.`);
-              // }
             >
               <Button icon={<UploadOutlined />}>Click to upload</Button>
             </Upload>
           </Form.Item>
 
-          {/* ---------------CA CERTIFICATE------------------- */}
-          {props.formValue.TenderType === "cmc"? null : <Form.Item
-            name="ca_link"
-            label="CA Certificate of the bidder"
-            rules={[
-              {
-                required: true,
-                message: "Please upload your CA certificate",
-              },
-            ]}
-            labelCol={{ span: "13", offset: "0" }}
-          >
-            <Upload
+{/* ---------------CA CERTIFICATE------------------- */}
+          {props.formValue.TenderType === "cmc" ? null : (
+            <Form.Item
               name="ca_link"
-              {...prop}
-              customRequest={handleUpload}
+              label="CA Certificate of the bidder"
+              rules={[
+                {
+                  required: true,
+                  message: "Please upload bidder's CA certificate",
+                },
+              ]}
+              labelCol={{ span: "13", offset: "0" }}
             >
-              <Button icon={<UploadOutlined />}>Click to upload</Button>
-            </Upload>
-          </Form.Item>}  
-          
+              <Upload name="ca_link" {...prop} customRequest={handleUpload}>
+                <Button icon={<UploadOutlined />}>Click to upload</Button>
+              </Upload>
+            </Form.Item>
+          )}
 
-          {/* ---------------PAN CERTIFICATE------------------- */}
+{/* ---------------PAN CERTIFICATE------------------- */}
           <Form.Item
             name="pan_link"
             label="PAN Document of the Bidder"
             rules={[
               {
                 required: true,
-                message: "Please upload your PAN Document",
+                message: "Please upload bidder's PAN Document",
               },
             ]}
             labelCol={{ span: "13", offset: "0" }}
@@ -231,14 +188,14 @@ const UploadForm = (props) => {
             </Upload>
           </Form.Item>
 
-          {/* ---------------ATTORNEY DOCUMENT------------------- */}
-          <Form.Item
+{/* ---------------ATTORNEY DOCUMENT------------------- */}
+          {props.formValue.TenderType === "civil" ? null : <Form.Item
             name="attorney_link"
             label="Affidavit document"
             rules={[
               {
                 required: true,
-                message: "Please upload your Affidavit Document",
+                message: "Please upload bidder's Affidavit Document",
               },
             ]}
             labelCol={{ span: "13", offset: "0" }}
@@ -246,16 +203,16 @@ const UploadForm = (props) => {
             <Upload name="attorney_link" {...prop} customRequest={handleUpload}>
               <Button icon={<UploadOutlined />}>Click to upload</Button>
             </Upload>
-          </Form.Item>
+          </Form.Item>}
 
-          {/* ---------------GSTIN DOCUMENT------------------- */}
+{/* ---------------GSTIN DOCUMENT------------------- */}
           <Form.Item
             name="gstin_link"
             label="GSTIN Document"
             rules={[
               {
                 required: true,
-                message: "Please upload your GSTIN Document",
+                message: "Please upload bidder's GSTIN Document",
               },
             ]}
             labelCol={{ span: "12", offset: "1" }}
@@ -265,79 +222,91 @@ const UploadForm = (props) => {
             </Upload>
           </Form.Item>
 
-          {/* ---------------WORK EXPERIENCE------------------- */}
-          <Form.Item
-            name="WorkExperience"
-            label="Work Experience document of the bidder"
-            rules={[
-              {
-                required: true,
-                message: "Please upload your Work Experience Document",
-              },
-            ]}
-            labelCol={{ span: "13", offset: "0" }}
-          >
-            <Upload
+{/* ---------------WORK EXPERIENCE------------------- */}
+          {/* {props.formValue.TenderType === "cmc" ? null : (
+            <Form.Item
               name="WorkExperience"
-              {...prop}
-              customRequest={handleUpload}
+              label="Work Experience document of the bidder"
+              rules={[
+                {
+                  required: true,
+                  message: "Please upload bidder's Work Experience Document",
+                },
+              ]}
+              labelCol={{ span: "13", offset: "0" }}
             >
-              <Button icon={<UploadOutlined />}>Click to upload</Button>
-            </Upload>
-          </Form.Item>
+              <Upload
+                name="WorkExperience"
+                {...prop}
+                customRequest={handleUpload}
+              >
+                <Button icon={<UploadOutlined />}>Click to upload</Button>
+              </Upload>
+            </Form.Item>
+          )} */}
 
-          {/* ---------------WORKING CAPITAL------------------- */}
-          <Form.Item
-            name="workcap_link"
-            label="Working Capital Document"
-            rules={[
-              {
-                required: true,
-                message: "Please upload your Working Capital Document",
-              },
-            ]}
-            labelCol={{ span: "12", offset: "1" }}
-          >
-            <Upload name="workcap_link" {...prop} customRequest={handleUpload}>
-              <Button icon={<UploadOutlined />}>Click to upload</Button>
-            </Upload>
-          </Form.Item>
+{/* ---------------WORKING CAPITAL------------------- */}
+          {props.formValue.TenderType === "civil" ? null : (
+            <Form.Item
+              name="workcap_link"
+              label="Working Capital Document"
+              rules={[
+                {
+                  required: true,
+                  message: "Please upload bidder's Working Capital Document",
+                },
+              ]}
+              labelCol={{ span: "12", offset: "1" }}
+            >
+              <Upload
+                name="workcap_link"
+                {...prop}
+                customRequest={handleUpload}
+              >
+                <Button icon={<UploadOutlined />}>Click to upload</Button>
+              </Upload>
+            </Form.Item>
+          )}
 
-          {/* ---------------DIGITAL SIGNATURE------------------- */}
-          <Form.Item
-            name="dsc_link"
-            label="Digital Signature of the bidder"
-            rules={[
-              {
-                required: true,
-                message: "Please upload your Digital Signature",
-              },
-            ]}
-            labelCol={{ span: "13", offset: "0" }}
-          >
-            <Upload name="dsc_link" {...prop} customRequest={handleUpload}>
-              <Button icon={<UploadOutlined />}>Click to upload</Button>
-            </Upload>
-          </Form.Item>
+{/* ---------------DIGITAL SIGNATURE------------------- */}
+          {props.formValue.TenderType === "civil" ? null : (
+            <Form.Item
+              name="dsc_link"
+              label="Digital Signature of the bidder"
+              rules={[
+                {
+                  required: true,
+                  message: "Please upload bidder's Digital Signature",
+                },
+              ]}
+              labelCol={{ span: "13", offset: "0" }}
+            >
+              <Upload name="dsc_link" {...prop} customRequest={handleUpload}>
+                <Button icon={<UploadOutlined />}>Click to upload</Button>
+              </Upload>
+            </Form.Item>
+          )}
 
-          {/* ---------------UNDERTAKING DOCUMENT ------------------- */}
-          <Form.Item
-            name="Undertaking Document"
-            label="Undertaking Dcocument"
-            rules={[
-              {
-                required: true,
-                message: "Please upload undertaking document",
-              },
-            ]}
-            labelCol={{ span: "13", offset: "0" }}
-          >
-            <Upload name="under_link" {...prop} customRequest={handleUpload}>
-              <Button icon={<UploadOutlined />}>Click to upload</Button>
-            </Upload>
-          </Form.Item>
+{/* ---------------UNDERTAKING DOCUMENT ------------------- */}
+          {props.formValue.TenderType === "civil" ? null : (
+            <Form.Item
+              name="Undertaking Document"
+              label="Undertaking Dcocument"
+              rules={[
+                {
+                  required: true,
+                  message: "Please upload undertaking document",
+                },
+              ]}
+              labelCol={{ span: "13", offset: "0" }}
+            >
+              <Upload name="under_link" {...prop} customRequest={handleUpload}>
+                <Button icon={<UploadOutlined />}>Click to upload</Button>
+              </Upload>
+            </Form.Item>
+          )}
 
-          {/* ---------------NIT DOCUMENT------------------- */}
+{/* ---------------NIT DOCUMENT------------------- */}
           <Form.Item
             name="NIT Document"
             label="NIT Document"
@@ -354,24 +323,45 @@ const UploadForm = (props) => {
             </Upload>
           </Form.Item>
 
-          {/* ---------------GTC DOCUMENT------------------- */}
-          <Form.Item
-            name="GTC Document"
-            label="GTC Document"
-            rules={[
-              {
-                required: true,
-                message: "Please upload GTC Document",
-              },
-            ]}
-            labelCol={{ span: "13", offset: "0" }}
-          >
-            <Upload name="gtc_link" {...prop} customRequest={handleUpload}>
-              <Button icon={<UploadOutlined />}>Click to upload</Button>
-            </Upload>
-          </Form.Item>
+{/* ---------------GTC DOCUMENT------------------- */}
+          {props.formValue.TenderType === "civil" ? null : (
+            <Form.Item
+              name="GTC Document"
+              label="GTC Document"
+              rules={[
+                {
+                  required: true,
+                  message: "Please upload GTC Document",
+                },
+              ]}
+              labelCol={{ span: "13", offset: "0" }}
+            >
+              <Upload name="gtc_link" {...prop} customRequest={handleUpload}>
+                <Button icon={<UploadOutlined />}>Click to upload</Button>
+              </Upload>
+            </Form.Item>
+          )}
 
-          {/* ----------------------SUBMIT BUTTON-------------------------- */}
+{/* -----------------Local Content-------------------- */}
+          {props.formValue.TenderType === "cmc" ? null : (
+            <Form.Item
+              name="Local Content Document"
+              label="Lcoal Content Document"
+              rules={[
+                {
+                  required: true,
+                  message: "Please upload Local content document",
+                },
+              ]}
+              labelCol={{ span: "13", offset: "0" }}
+            >
+              <Upload name="civil_local" {...prop} customRequest={handleUpload}>
+                <Button icon={<UploadOutlined />}>Click to upload</Button>
+              </Upload>
+            </Form.Item>
+          )}
+
+{/* ----------------------SUBMIT BUTTON-------------------------- */}
           <Form.Item {...tailFormItemLayout}>
             <Button type="primary" htmlType="button" onClick={onFinish}>
               Submit
@@ -413,3 +403,32 @@ export default UploadForm;
 //   );
 // };
 // export default UploadFiles;
+
+
+
+// formData.append("PAN", doc);
+// try{
+//   let uploadURLRes = await axios.get('http://localhost:5000/getuploadurl');
+//   let res = await axios.post(uploadURLRes.message, formData, {     // API of the service used to upload the document
+//   headers: {
+//     "Content-Type": "multipart/form-data",
+//   },
+//   });
+//   await axios.post('http://localhost:5000/uploaddetails',res)
+
+// onSuccess(message.success(`${info.file.name} file uploaded successfully`));
+// }
+// catch(err){
+//   console.log("Eroor: ", err);
+//   onError(`${info.file.name} file upload failed.`);
+// }
+// if (info.file.status !== "uploading") {
+//   console.log(info.file, info.fileList);
+// }
+// if (info.file.status === "done") {
+//   message.success(
+//     `${info.file.name} file uploaded successfully`
+//   );
+// } else if (info.file.status === "error") {
+//   message.error(`${info.file.name} file upload failed.`);
+// }

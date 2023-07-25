@@ -1,11 +1,8 @@
-import { Button, Form, Input, Select, DatePicker } from "antd";
+import { Button, Form, Input, Select, DatePicker, message } from "antd";
 import Phones from "./Phones";
 import { States, Years } from "./States";
-// import onSubmit from "../../controllers/submitController";
 import { useNavigate } from "react-router-dom";
-import handleSubmit from "../../controllers/handleSubmit";
 import customFetch from "../../utils/axios";
-import { message } from "antd";
 
 const { Option } = Select;
 
@@ -51,8 +48,6 @@ const tailFormItemLayout = {
   },
 };
 
-// const url = "http://localhost:5000/register";  // Backend endpoint earlier used
- // API endpoint to be entered here
 
 const DetailsForm = (props) => {
   const navigate = useNavigate();
@@ -64,13 +59,15 @@ const DetailsForm = (props) => {
       console.log("success: ", values);
       props.setFormValue(values);
       const usrToken = localStorage.getItem("token");
-      // console.log("User -->", props.user);
       const resp = await customFetch.post("/details", {details: JSON.stringify(values)}, {
         headers: {
           authorization: `Bearer ${usrToken}`,
         },
       });
+      console.log(resp);
       message.success(resp?.data?.msg);
+      const ID = resp.data.bid_id;
+      props.setID(ID);
       navigate('/upload')
     } catch (e) {
       console.log(e);
@@ -118,31 +115,22 @@ const DetailsForm = (props) => {
         <p
           className="tender_title"
           style={{
-            textAlign: "left",
-            paddingLeft: "10px",
+            paddingLeft: "40px",
             backgroundColor: "white",
           }}
         >
-          Online Enrollment of Corporate/Bidder
+          Enrollment of a new Bidder
         </p>
         <p
           style={{
             fontFamily: "verdana",
             fontWeight: "bold",
             fontSize: "13px",
-            padding: "5px 0px 10px 50px",
+            padding: "5px 0px 10px 40px",
             color: "#4f4f4f",
           }}
         >
-          <img
-            style={{
-              height: "15px",
-              marginRight: "5px",
-            }}
-            alt="Title_image"
-            src="./bullet1.png"
-          ></img>
-          Corporate Tenderer Details
+          Enter Bidder's basic details
         </p>
 
         <Form
@@ -182,6 +170,18 @@ const DetailsForm = (props) => {
                 },
               ]}
             />
+          </Form.Item>
+          <Form.Item
+            name="BidderRefNo"
+            label="Bidder reference Number"
+            rules={[
+              {
+                required: false,
+                message: "Please enter the Bidder reference number!",
+              },
+            ]}
+          >
+            <Input/>
           </Form.Item>
 
           <Form.Item
@@ -244,7 +244,7 @@ const DetailsForm = (props) => {
             rules={[
               {
                 required: false,
-                message: "Please input your City Name",
+                message: "Please input City Name",
               },
             ]}
           >
@@ -261,7 +261,7 @@ const DetailsForm = (props) => {
               },
             ]}
           >
-            <Select placeholder="select your state">
+            <Select placeholder="select the state">
               {States.map((each, index) => (
                 <Option key={index} value={each.name}>
                   {each.name}
@@ -276,7 +276,7 @@ const DetailsForm = (props) => {
             rules={[
               {
                 required: false,
-                message: "Please input your Postal Code.",
+                message: "Please input the Postal Code.",
               },
             ]}
           >
@@ -290,7 +290,7 @@ const DetailsForm = (props) => {
             rules={[
               {
                 required: false,
-                message: "Please input your PAN Number",
+                message: "Please input the PAN Number",
               },
             ]}
           >
@@ -416,13 +416,13 @@ const DetailsForm = (props) => {
               fontFamily: "verdana",
               fontWeight: "bold",
               fontSize: "13px",
-              padding: "30px 10px 15px 10px",
+              padding: "30px 10px 15px 0px",
               color: "#4f4f4f",
               backgroundColor: "white",
-              margin: "10px -10px",
+              margin: "20px -20px",
             }}
           >
-            <img
+            {/* <img
               style={{
                 height: "15px",
                 marginRight: "5px",
@@ -430,7 +430,7 @@ const DetailsForm = (props) => {
               }}
               alt="Title_image"
               src="./bullet1.png"
-            ></img>
+            ></img> */}
             Contact Details{" "}
             <span>(Enter Company's Contact Person Details)</span>
           </p>

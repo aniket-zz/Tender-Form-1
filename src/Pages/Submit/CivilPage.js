@@ -4,7 +4,7 @@ import handleSubmit from "../../controllers/handleSubmit";
 import { useNavigate } from "react-router-dom";
 import customFetch from "../../utils/axios";
 import { Table, ConfigProvider } from "antd";
-import CMCdata, {CIVILdata} from "./Information";
+// import {CIVILdata} from "./Information";
 
 const SubmitPage = (props) => {
   const navigate = useNavigate();
@@ -38,22 +38,28 @@ const SubmitPage = (props) => {
     console.log("Failed:", errorInfo);
   };
 
+  console.log(props.id);
+  const index = props.id;     // Holds the Index of the clicked bidder from the bidder list
+
   useEffect(
     () => {
       const getDetails = async () => {
         try {
-          const resp = await customFetch.get("/reports", {
+          const resp = await customFetch.get("/bidder_list", {
             headers: {
               authorization: `Bearer ${usrToken}`,
             },
           });
           console.log(resp);
-          if (resp.data.status === "0") {
+          const list = resp.data.bidder_list[index];
+          // console.log(list);
+
+          if (list.status === "1") {
             const arr = {
-              details: resp.data.details,
-              reports: resp.data.reports,
+              details: list.details,
+              reports: list.output,
             };
-            const temp = resp.data.status;
+            const temp = list.status;
             setStatus(temp);
             setInfo(arr);
           }
@@ -67,10 +73,38 @@ const SubmitPage = (props) => {
     []
   );
 
-  const details = info?.details ? JSON.parse(info?.details) : undefined;
+  // useEffect(
+  //   () => {
+  //     const getDetails = async () => {
+  //       try {
+  //         const resp = await customFetch.get("/reports", {
+  //           headers: {
+  //             authorization: `Bearer ${usrToken}`,
+  //           },
+  //         });
+  //         console.log(resp);
+  //         if (resp.data.status === "0") {
+  //           const arr = {
+  //             details: resp.data.details,
+  //             reports: resp.data.reports,
+  //           };
+  //           const temp = resp.data.status;
+  //           setStatus(temp);
+  //           setInfo(arr);
+  //         }
+  //       } catch (e) {
+  //         console.log(e.message);
+  //       }
+  //     };
+  //     getDetails();
+  //   },
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  //   []
+  // );
 
-  const columns = details
-    ? [
+  const details = info.details ? JSON.parse(info.details) : undefined;
+
+  const columns = [
         {
           title: "BASIC DETAILS",
           align: "center",
@@ -92,8 +126,7 @@ const SubmitPage = (props) => {
             },
           ],
         },
-      ]
-    : {};
+      ];
 
   const data = details
     ? [
@@ -161,11 +194,6 @@ const SubmitPage = (props) => {
           key: 13,
           detail: "DOB (YYYY-MM-DD)",
           value: details?.DOB?.substring(0, 10),
-          // details?.DOB?.$D +
-          // "/ " +
-          // details?.DOB?.$M +
-          // "/ " +
-          // details?.DOB?.$y,
         },
         {
           key: 14,
@@ -178,14 +206,12 @@ const SubmitPage = (props) => {
           value: details?.prefix + "  " + details?.phone,
         },
       ]
-    : {};
-
+    : [];
   //--------------------------------Report----------------------------------
   const reports = info.reports ? JSON.parse(info.reports) : {};
   console.log(reports);
 
-  // const Legal = reports.legal ? reports.legal : undefined;
-  const Legal = CIVILdata.legal;
+  const Legal = reports.legal ? reports.legal : undefined;
 
   //-------------------------------CIVIL-----------------------------------
 
@@ -260,12 +286,17 @@ const SubmitPage = (props) => {
           {
             name: "PAN Number",
             key: "PANnumber",
-            value: CIVILdata.pan[0]
+            value: reports.pan[0]
           },
           {
             name: "GSTIN Number",
             key: "GSTINnumber",
-            value: CIVILdata.gstin[0]
+            value: reports.gstin[0] + " (verified)"
+          },
+          {
+            key: "localContent",
+            name: "Local Content Percentage of Supplier",
+            value: reports.local_content
           }
         ]
       : [
@@ -274,32 +305,27 @@ const SubmitPage = (props) => {
             key: "singleBidder",
           },
         ]
-    : {};
+    : [];
 
-  // const legal_data1 = [
-  //   {
-  //     key: 10,
-  //     name: "Name",
-  //     value: Legal?.name
-  //   }
-  // ]
 
-  // //------------------------------CA---------------------------------
+  //------------------------------CA---------------------------------
   
+
   // Catch the CA from the output
   const CA = {
-        udin: CIVILdata?.udin,
-        ca_name: CIVILdata?.ca_name,
-        companyAudited: CIVILdata?.company_audited,
-        workType: CIVILdata?.type_of_work,
+        udin: reports.udin,
+        ca_name: reports.ca_name,
+        companyAudited: reports.company_audited,
+        workType: reports.type_of_work,
         // dateIssued: CIVILdata.?date_issued,
-        relevantWorkExperience: CIVILdata?.relevent_work_experience,
+        relevantWorkExperience: reports.relevent_work_experience,
       }
 
   const ca_columnn = [
     {
       title: "CA Info",
-      align: "left",
+      align: "center",
+      className: "tableHeading",
       children: [
         {
           title: "Name",
@@ -354,12 +380,12 @@ const SubmitPage = (props) => {
           value: each["Gross Turn Over"],
         })),
       ]
-    : undefined;
+    : [];
 
   //-----------------------NIT Description--------------------
 
   // const NIT = reports.nit_desc ? reports.nit_desc : undefined;
-  const NIT = CIVILdata.nit_desc;
+  const NIT = reports.nit_desc;
 
   const nit_column = [
     {
@@ -419,157 +445,157 @@ const SubmitPage = (props) => {
     : [];
 
   //----------------------Working Capital --------------------
-  const workCap_Column = [
-    {
-      title: "WORKING CAPITAL DOCUMENT",
-      key: "workincapital",
-      className: "tableHeading",
-      children: [
-        {
-          title: "DETAIL",
-          key: "details",
-          dataIndex: "details",
-          className: "DetailsClass"
-        },
-        {
-          title: "VALUE",
-          key: "value",
-          dataIndex: "value",
-          className: "tableValues"
-        }
+  // const workCap_Column = [
+  //   {
+  //     title: "WORKING CAPITAL DOCUMENT",
+  //     key: "workincapital",
+  //     className: "tableHeading",
+  //     children: [
+  //       {
+  //         title: "DETAIL",
+  //         key: "details",
+  //         dataIndex: "details",
+  //         className: "DetailsClass"
+  //       },
+  //       {
+  //         title: "VALUE",
+  //         key: "value",
+  //         dataIndex: "value",
+  //         className: "tableValues"
+  //       }
 
-      ]
-    }
-  ]
+  //     ]
+  //   }
+  // ]
 
-  const workCap_data = reports.pan?  [
-    {
-      details: "Document type",
-      value: CMCdata.workingCapital.docType,
-      key: 1
-    },
-    {
-      details: "Document Issued date",
-      value: CMCdata.workingCapital.IssuedDate,
-      key: 2
-    },
-    {
-      details: "Working Capital Fund Date",
-      value: CMCdata.workingCapital.FundDate,
-      key: 3
-    },
-    {
-      details: "Working Capital (Cr)",
-      value: reports?.workcap["Working Capital"] / 1000000000 + " Cr",
-      key: 4
-    }
+  // const workCap_data = reports.pan?  [
+  //   {
+  //     details: "Document type",
+  //     value: CMCdata.workingCapital.docType,
+  //     key: 1
+  //   },
+  //   {
+  //     details: "Document Issued date",
+  //     value: CMCdata.workingCapital.IssuedDate,
+  //     key: 2
+  //   },
+  //   {
+  //     details: "Working Capital Fund Date",
+  //     value: CMCdata.workingCapital.FundDate,
+  //     key: 3
+  //   },
+  //   {
+  //     details: "Working Capital (Cr)",
+  //     value: reports?.workcap["Working Capital"] / 1000000000 + " Cr",
+  //     key: 4
+  //   }
 
-  ]: {};
+  // ]: [];
   //-----------------------Other Part--------------------------
 
-  const other_column = [
-    {
-      title: "DETAIL",
-      dataIndex: "details",
-      key: "details",
-      onCell: (_, index) => ({
-        colSpan: index === 5 ? 2 : 1,
-        className: index === 5 ? "detailValue" : "DetailsClass"
-      }),
-    },
-    {
-      title: "VALUE",
-      dataIndex: "value",
-      key: "value",
-      className: "tableValues",
-      onCell: (_, index) => ({
-        colSpan: index === 5 ? 0 : 1,
-      }),
-    },
-  ];
+  // const other_column = [
+  //   {
+  //     title: "DETAIL",
+  //     dataIndex: "details",
+  //     key: "details",
+  //     onCell: (_, index) => ({
+  //       colSpan: index === 5 ? 2 : 1,
+  //       className: index === 5 ? "detailValue" : "DetailsClass"
+  //     }),
+  //   },
+  //   {
+  //     title: "VALUE",
+  //     dataIndex: "value",
+  //     key: "value",
+  //     className: "tableValues",
+  //     onCell: (_, index) => ({
+  //       colSpan: index === 5 ? 0 : 1,
+  //     }),
+  //   },
+  // ];
 
-  const other_data = reports.pan
-    ? [
-        {
-          key: 2,
-          details: "GSTIN Number",
-          value: reports?.gstin + " (verified)",
-        },
-        {
-          key: 3,
-          details: "Power Of Attorny",
-          value: reports?.attorney.attorney,
-        },
-        {
-          key: 4,
-          details: "Work Simiarity",
-          value:
-            Math.floor(reports.attorney["work similarity"] * 10000) / 100 +
-            " %",
-        },
-        {
-          key: 7,
-          details: "Similar Work",
-          value: reports.attorney["work similarity"] > 0.95 ? "Yes" : "No",
-        },
-        {
-          key: 5,
-          details: "Digital Signature",
-          value: reports?.dsc,
-        },
-        {
-          key: 1,
-          details: "PAN Details of Partners",
-        },
-        ...Object.entries(CMCdata.pan).map((each, index) => ({
-          key: index + 8,
-          details: each[0],
-          value: each[1],
-        })),
-        {
-          key: 11,
-          details: "UDIN Number",
-          value: reports?.workcap["UDIN No"] ,
-        },
-      ]
-    : {};
+  // const other_data = reports.pan
+  //   ? [
+  //       {
+  //         key: 2,
+  //         details: "GSTIN Number",
+  //         value: reports?.gstin + " (verified)",
+  //       },
+  //       {
+  //         key: 3,
+  //         details: "Power Of Attorny",
+  //         value: reports?.attorney.attorney,
+  //       },
+  //       {
+  //         key: 4,
+  //         details: "Work Simiarity",
+  //         value:
+  //           Math.floor(reports.attorney["work similarity"] * 10000) / 100 +
+  //           " %",
+  //       },
+  //       {
+  //         key: 7,
+  //         details: "Similar Work",
+  //         value: reports.attorney["work similarity"] > 0.95 ? "Yes" : "No",
+  //       },
+  //       {
+  //         key: 5,
+  //         details: "Digital Signature",
+  //         value: reports?.dsc,
+  //       },
+  //       {
+  //         key: 1,
+  //         details: "PAN Details of Partners",
+  //       },
+  //       ...Object.entries(CMCdata.pan).map((each, index) => ({
+  //         key: index + 8,
+  //         details: each[0],
+  //         value: each[1],
+  //       })),
+  //       {
+  //         key: 11,
+  //         details: "UDIN Number",
+  //         value: reports?.workcap["UDIN No"] ,
+  //       },
+  //     ]
+  //   : [];
 
   //----------------------Undertaking Document-------------------
-   const undertaking_column = [
-    {
-      title: "UNDERTAKING DOCUMENT",
-      key: "undertaking",
-      className: "tableHeading",
-      children: [
-        {
-          title: "DETAIL",
-          key: "details",
-          dataIndex: "details",
-          className: "DetailsClass"
-        },
-        {
-          title: "VALUE",
-          key: "value",
-          dataIndex: "value",
-          className: "tableValues"
-        }
+  //  const undertaking_column = [
+  //   {
+  //     title: "UNDERTAKING DOCUMENT",
+  //     key: "undertaking",
+  //     className: "tableHeading",
+  //     children: [
+  //       {
+  //         title: "DETAIL",
+  //         key: "details",
+  //         dataIndex: "details",
+  //         className: "DetailsClass"
+  //       },
+  //       {
+  //         title: "VALUE",
+  //         key: "value",
+  //         dataIndex: "value",
+  //         className: "tableValues"
+  //       }
 
-      ]
-    }
-   ];
+  //     ]
+  //   }
+  //  ];
 
-   const undertaking_data = reports.undertaking? [
-    {
-      details: "Relatives",
-      key: 1,
-      value: CMCdata.Undertaking.realtives
-    },
-    {
-      key: 2,
-      details: "Undertaking",
-      value: "Undertaking matches with accuracy of " + Math.floor(reports.undertaking * 10000) / 100 + " %",
-    },
-   ]: {};
+  //  const undertaking_data = reports.undertaking? [
+  //   {
+  //     details: "Relatives",
+  //     key: 1,
+  //     value: CMCdata.Undertaking.realtives
+  //   },
+  //   {
+  //     key: 2,
+  //     details: "Undertaking",
+  //     value: "Undertaking matches with accuracy of " + Math.floor(reports.undertaking * 10000) / 100 + " %",
+  //   },
+  //  ]: [];
 
   //----------------------Check Part---------------------------
   const check_column = [
@@ -595,7 +621,7 @@ const SubmitPage = (props) => {
     }
   ]
 
-  const check_data = reports.legal ? [
+  const check_data =  [
     {
       query: "Name of the Joint Venture reamined same throughout the document?",
       status: "YES",
@@ -616,80 +642,78 @@ const SubmitPage = (props) => {
       status: "NO",
       key: 4
     }
-  ] : {};
+  ];
 
   //-----------------------Calculations Part---------------------
 
   //-------COST OF WORK------------
-  const costOfWork = NIT ? NIT["Cost of Work"] : 0; // 50 % Cost of work in original Notice
-  // const sum = TurnOver?.reduce((a, b) => a + parseInt(b, 10), 0);
-  // const meanTurnover = sum / TurnOver.length || 0;
-  const halfAnnualTenderValue = NIT ? 0.5 * ((costOfWork * 365) / NIT["Period of Completion (Days)"] ): 0;
-  const meanTurnover = reports.workcap
-    ? reports?.workcap["Working Capital"]
-    : 0;
+  // const costOfWork = NIT ? NIT["Cost of Work"] : 0; // 50 % Cost of work in original Notice
+  // const halfAnnualTenderValue = NIT ? 0.5 * ((costOfWork * 365) / NIT["Period of Completion (Days)"] ): 0;
+  // const meanTurnover = reports.workcap
+  //   ? reports?.workcap["Working Capital"]
+  //   : 0;
 
 
-  // //--------Joint venture------------
-  const numOfBidders = Legal?.partners
-    ? Object.entries(Legal?.partners).length
-    : 0;
-  const leadShare = Legal?.partners
-    ? Math.max(...Object.values(Legal?.partners))
-    : 0;
-  const leastShare = Legal?.partners
-    ? Math.min(...Object.values(Legal?.partners)) - 0.2
-    : 0;
+  // // //--------Joint venture------------
+  // const numOfBidders = Legal?.partners
+  //   ? Object.entries(Legal?.partners).length
+  //   : 0;
+  // const leadShare = Legal?.partners
+  //   ? Math.max(...Object.values(Legal?.partners))
+  //   : 0;
+  // const leastShare = Legal?.partners
+  //   ? Math.min(...Object.values(Legal?.partners)) - 0.2
+  //   : 0;
 
-  function Check() {
-    if (costOfWork === 0 || meanTurnover === 0 || halfAnnualTenderValue === 0) {
-      <Alert
-        message="Bid Under Review!"
-        description="Your Bid is under review, login after sometime."
-        type="info"
-      />;
-      return;
-    }
-    if (meanTurnover < halfAnnualTenderValue) {
-      return (
-        <Alert
-          message="Bid Cancelled!"
-          description="Mean Turnover is less than tha Cost Of Work in NIT"
-          type="error"
-        />
-      );
-    }
-    if (numOfBidders > 3) {
-      return (
-        <Alert
-          message="Bid Cancelled!"
-          description="Number of Bidders are more than 3"
-          type="error"
-        />
-      );
-    }
+  // function Check() {
+  //   if (costOfWork === 0 || meanTurnover === 0 || halfAnnualTenderValue === 0) {
+  //     <Alert
+  //       message="Bid Under Review!"
+  //       description="Your Bid is under review, login after sometime."
+  //       type="info"
+  //     />;
+  //     return;
+  //   }
+  //   if (meanTurnover < halfAnnualTenderValue) {
+  //     return (
+  //       <Alert
+  //         message="Bid Cancelled!"
+  //         description="Mean Turnover is less than tha Cost Of Work in NIT"
+  //         type="error"
+  //       />
+  //     );
+  //   }
+  //   if (numOfBidders > 3) {
+  //     return (
+  //       <Alert
+  //         message="Bid Cancelled!"
+  //         description="Number of Bidders are more than 3"
+  //         type="error"
+  //       />
+  //     );
+  //   }
 
-    if (leadShare < 0.5) {
-      return (
-        <Alert
-          message="Bid Cancelled!"
-          description="Lead Partner Share is less than 50%"
-          type="error"
-        />
-      );
-    }
+  //   if (leadShare < 0.5) {
+  //     return (
+  //       <Alert
+  //         message="Bid Cancelled!"
+  //         description="Lead Partner Share is less than 50%"
+  //         type="error"
+  //       />
+  //     );
+  //   }
 
-    if (leastShare < 0.2) {
-      return (
-        <Alert
-          message="Bid Cancelled!"
-          description="Partnership share of one or more Bidder is less than 20%"
-          type="error"
-          showIcon
-        />
-      );
-    }
-  }
+  //   if (leastShare < 0.2) {
+  //     return (
+  //       <Alert
+  //         message="Bid Cancelled!"
+  //         description="Partnership share of one or more Bidder is less than 20%"
+  //         type="error"
+  //         showIcon
+  //       />
+  //     );
+  //   }
+  // }
 
   //----------------------Final Return-----------------------
 
@@ -712,7 +736,7 @@ const SubmitPage = (props) => {
         Bidder Details
       </p>
       <div className="submit_div">
-        {
+        { 
           <ConfigProvider
             theme={{
               token: {
@@ -725,16 +749,16 @@ const SubmitPage = (props) => {
               }
             }}
           >
-            {2 > 1 ? (
+            {status ==="0" ? (
               <div>
-                {/* <Table
+                <Table
                   pagination={false}
                   bordered={true}
                   columns={columns}
                   dataSource={data}
                 />
                 <br />
-                <br /> */}
+                <br />
                 <Table
                   bordered={true}
                   pagination={false}
@@ -794,14 +818,18 @@ const SubmitPage = (props) => {
                 
               </div>
             ) : (
-              console.log("Bid Under Review!")
+              <Alert
+              message="Bid Under Review!"
+              description="Your bid is under evaluation."
+              type="info"
+            />
             )}
           </ConfigProvider>
         }
 
         <Form
           onSubmit={(e) => handleSubmit(e)}
-          name="basic"
+          // name="basic"
           style={{
             left: "0rem",
           }}
@@ -818,7 +846,7 @@ const SubmitPage = (props) => {
           onFinishFailed={onFinishFailed}
           autoComplete="off"
         >
-          {/* {status === "1" ? (
+          {/* {status === "0" ? (
             Check()
           ) : (
             <Alert
@@ -835,6 +863,9 @@ const SubmitPage = (props) => {
           >
             Logout
           </Button>
+          <Button href="/Bidders"  style={{margin: "0px 15px"}}>
+            Go back
+          </Button>
         </Form>
       </div>
     </div>
@@ -842,190 +873,3 @@ const SubmitPage = (props) => {
 };
 
 export default SubmitPage;
-
-// const SubmitPage = (props) => {
-//     const onFinish = async (values) => {
-//         console.log('Values', values);
-
-//       };
-//     const onFinishFailed = (errorInfo) => {
-//         console.log("Failed:", errorInfo);
-//       };
-
-//   return (
-//     <div>
-//       <h3>Registered successfully!</h3>
-//       <p className="details_div">{
-//         (props.formValue).map(each => {
-//                 return (
-
-//                 )
-//               })}
-//       </p>
-//       <div className="login_div">
-//         <Form
-//           onSubmit={(e) => handleSubmit(e)}
-//           name="basic"
-//           labelCol={{
-//             span: 8,
-//           }}
-//           wrapperCol={{
-//             span: 16,
-//           }}
-//           style={{
-//             maxWidth: 600,
-//           }}
-//           initialValues={{
-//             remember: true,
-//           }}
-//           onFinish={onFinish}
-//           onFinishFailed={onFinishFailed}
-//           autoComplete="off"
-//         >
-
-//             <Button type="primary" htmlType="submit" href="/" >
-//               Go to Home Page
-//             </Button>
-
-//         </Form>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default SubmitPage;
-
-// const getLegal = async (token) => {
-//   try {
-//     let result = await axios.post(
-//       "http://18.206.81.179/v1/document/legal",
-//       {
-//         userId: "2",
-//         docId: "2",
-//         s3Path:
-//           "s3://deepdelvetesting/mcl/legal/5_Legal_Status_of_the_bidder.pdf",
-//       },
-
-//       {
-//         headers: {
-//           'Access-Control-Allow-Origin': '*',
-//           "Content-Type": "application/json",
-//           'accept': "application/json",
-//           'Authorization': `Bearer ${token}`,
-//         },
-//       }
-//     );
-//     return {
-//       LegalInfo: result.data?.LegalInfo,
-//       partnership: result.data?.partnership,
-//     };
-//   } catch (e) {
-//     console.error(e.message);
-//   }
-// };
-
-// const getCA = async (token) => {
-//   try {
-//     let result = await axios.post(
-//       "http://18.206.81.179/v1/document/ca",
-//       {
-//         userId: "1",
-//         docId: "1",
-//         s3Path:
-//           "s3://deepdelvetesting/mcl/ca/CACERTIFICATE1920.pdf",
-//       },
-//       {
-//         headers: {
-//           'Access-Control-Allow-Origin': '*',
-//           "Content-Type": "application/json",
-//           'accept': "application/json",
-//           'Authorization': `Bearer ${token}`
-//         },
-//       }
-//     );
-//     return result.data?.caInfo;
-
-//   } catch (e) {
-//     console.error(e.message);
-//   }
-// };
-
-// const getPAN = async (token) => {
-//   try {
-//     let result = await axios.post(
-//       "http://18.206.81.179/v1/document/pan",
-//       {
-//         userId: "4",
-//         docId: "4",
-//         s3Path:
-//           "s3://deepdelvetesting/mcl/pan/3_Permanent_Account_Number.pdf",
-//       },
-//       {
-//         headers: {
-//           'Access-Control-Allow-Origin': '*',
-//           "Content-Type": "application/json",
-//           'accept': "application/json",
-//           'Authorization': `Bearer ${token}`,
-//         },
-//       }
-//     );
-//     return result.data?.panNumber;
-//   } catch (e) {
-//     console.error(e.message);
-//   }
-// };
-
-// const getGSTIN = async (token) => {
-//   try {
-//     let result = await axios.post(
-//       "http://18.206.81.179/v1/document/gstin",
-//       {
-//         userId: "4",
-//         docId: "4",
-//         s3Path: "s3://deepdelvetesting/mcl/gistin/4_GST_registration.pdf",
-//       },
-//       {
-//         headers: {
-//           'Access-Control-Allow-Origin': '*',
-//           'Content-Type': "application/json",
-//           'accept': "application/json",
-//           'Authorization': `Bearer ${token}`,
-//         },
-//       }
-//     );
-//     return result.data?.gstinNumber;
-//   } catch (e) {
-//     console.error(e.message);
-//   }
-// };
-
-// const getToken = async () => {
-//   try {
-//     let result = await axios.post(
-//       "http://18.206.81.179/token",
-//       { username: "mcl", password: "mclextract" },
-//       {
-//         headers: {
-//           "Content-Type": "application/x-www-form-urlencoded",
-//           accept: "application/json",
-//         },
-//       }
-//     );
-
-//     if (result.data.access_token) {
-//       const userData = {};
-//       userData.legal = await getLegal(result.data.access_token);
-//       // userData.PAN = await getPAN(result.data.access_token);
-//       // userData.GSTIN = await getGSTIN(result.data.access_token);
-//       userData.CA = await getCA(result.data.access_token);
-//       return userData;
-//     }
-//   } catch (e) {
-//     console.error(e.message);
-//   }
-// };
-
-// useEffect(() => {
-//   const userData = getToken();
-//   console.log(userData);
-// },[]);
