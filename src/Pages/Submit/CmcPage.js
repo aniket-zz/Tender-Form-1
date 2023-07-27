@@ -55,7 +55,7 @@ const CMCPage = (props) => {
           const list = resp.data.bidder_list[index];
           // console.log(list);
 
-          if (list.status === "1") {
+          if (list.status === "0") {
             const arr = {
               details: list.details,
               reports: list.output,

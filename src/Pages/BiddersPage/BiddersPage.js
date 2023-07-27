@@ -91,7 +91,7 @@ const BiddersPage = (props) => {
         },
         {
           detail: "Tender Publish Date",
-          value: NIT["Tender Publication Date"],
+          value: NIT["Tender Publication Data"],
           key: "publishdate",
         },
         {

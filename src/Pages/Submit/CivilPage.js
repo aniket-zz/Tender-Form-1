@@ -6,7 +6,7 @@ import customFetch from "../../utils/axios";
 import { Table, ConfigProvider } from "antd";
 // import {CIVILdata} from "./Information";
 
-const SubmitPage = (props) => {
+const CIVILPage = (props) => {
   const navigate = useNavigate();
   const usrToken = localStorage.getItem("token");
   /**
@@ -54,7 +54,7 @@ const SubmitPage = (props) => {
           const list = resp.data.bidder_list[index];
           // console.log(list);
 
-          if (list.status === "1") {
+          if (list.status === "0") {
             const arr = {
               details: list.details,
               reports: list.output,
@@ -73,36 +73,9 @@ const SubmitPage = (props) => {
     []
   );
 
-  // useEffect(
-  //   () => {
-  //     const getDetails = async () => {
-  //       try {
-  //         const resp = await customFetch.get("/reports", {
-  //           headers: {
-  //             authorization: `Bearer ${usrToken}`,
-  //           },
-  //         });
-  //         console.log(resp);
-  //         if (resp.data.status === "0") {
-  //           const arr = {
-  //             details: resp.data.details,
-  //             reports: resp.data.reports,
-  //           };
-  //           const temp = resp.data.status;
-  //           setStatus(temp);
-  //           setInfo(arr);
-  //         }
-  //       } catch (e) {
-  //         console.log(e.message);
-  //       }
-  //     };
-  //     getDetails();
-  //   },
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  //   []
-  // );
 
   const details = info.details ? JSON.parse(info.details) : undefined;
+  console.log(info);
 
   const columns = [
         {
@@ -312,14 +285,14 @@ const SubmitPage = (props) => {
   
 
   // Catch the CA from the output
-  const CA = {
+  const CA = reports.ca_name ? {
         udin: reports.udin,
         ca_name: reports.ca_name,
         companyAudited: reports.company_audited,
         workType: reports.type_of_work,
         // dateIssued: CIVILdata.?date_issued,
         relevantWorkExperience: reports.relevent_work_experience,
-      }
+      } : undefined
 
   const ca_columnn = [
     {
@@ -775,14 +748,6 @@ const SubmitPage = (props) => {
                 />
                 <br />
                 <br />
-                {/* <Table
-                  bordered={true}
-                  pagination={false}
-                  columns={workCap_Column}
-                  dataSource={workCap_data}
-                />
-                <br />
-                <br /> */}
                 <Table
                  bordered={true}
                  columns={ca_columnn} 
@@ -791,22 +756,6 @@ const SubmitPage = (props) => {
                  />
                 <br />
                 <br />
-                {/* <Table
-                  bordered={true}
-                  pagination={false}
-                  columns={undertaking_column}
-                  dataSource={undertaking_data}
-                />
-                <br />
-                <br />
-                <Table
-                  bordered={true}
-                  pagination={false}
-                  columns={other_column}
-                  dataSource={other_data}
-                />
-                <br />
-                <br /> */}
                 <Table
                   bordered={true}
                   pagination={false}
@@ -872,4 +821,4 @@ const SubmitPage = (props) => {
   );
 };
 
-export default SubmitPage;
+export default CIVILPage;
