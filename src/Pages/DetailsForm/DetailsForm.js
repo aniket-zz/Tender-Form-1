@@ -1,20 +1,20 @@
-import { Button, Form, Input, Select, DatePicker, message } from "antd";
-import Phones from "./Phones";
-import { States, Years } from "./States";
+import { Button, Form, Input, Select, message } from "antd";
+// import Phones from "./Phones";
+// import { States, Years } from "./States";
 import { useNavigate } from "react-router-dom";
 import customFetch from "../../utils/axios";
 
-const { Option } = Select;
+// const { Option } = Select;
 
-const config = {
-  rules: [
-    {
-      type: "object",
-      required: false,
-      message: "Please select DOB!",
-    },
-  ],
-};
+// const config = {
+//   rules: [
+//     {
+//       type: "object",
+//       required: false,
+//       message: "Please select DOB!",
+//     },
+//   ],
+// };
 
 const formItemLayout = {
   labelCol: {
@@ -75,26 +75,26 @@ const DetailsForm = (props) => {
     }
   };
 
-  const prefixSelector = (
-    <Form.Item name="prefix" noStyle>
-      <Select
-        style={{
-          width: "6rem",
-        }}
-      >
-        {Phones.map((individual, index) => {
-          const name = individual.code;
-          const code = individual.dial_code;
-          return (
-            <Option value={code} key={index}>
-              {" "}
-              {name} ({code})
-            </Option>
-          );
-        })}
-      </Select>
-    </Form.Item>
-  );
+  // const prefixSelector = (
+  //   <Form.Item name="prefix" noStyle>
+  //     <Select
+  //       style={{
+  //         width: "6rem",
+  //       }}
+  //     >
+  //       {Phones.map((individual, index) => {
+  //         const name = individual.code;
+  //         const code = individual.dial_code;
+  //         return (
+  //           <Option value={code} key={index}>
+  //             {" "}
+  //             {name} ({code})
+  //           </Option>
+  //         );
+  //       })}
+  //     </Select>
+  //   </Form.Item>
+  // );
 
   return (
     <div>
@@ -186,19 +186,19 @@ const DetailsForm = (props) => {
 
           <Form.Item
             name="companyName"
-            label="Company Name / Licence Holder Name"
+            label="License Holder/ Company Name"
             labelCol={{ span: "7", offset: "1" }}
             rules={[
               {
                 required: false,
-                message: "Please input your Company Name / Licence Holder Name",
+                message: "Please input Licence Holder/ Bidder's Name",
               },
             ]}
           >
             <Input />
           </Form.Item>
 
-          <Form.Item
+          {/* <Form.Item
             name="RegistrationNumber"
             label="Registration Number"
             rules={[
@@ -422,15 +422,6 @@ const DetailsForm = (props) => {
               margin: "20px -20px",
             }}
           >
-            {/* <img
-              style={{
-                height: "15px",
-                marginRight: "5px",
-                marginLeft: "-5px",
-              }}
-              alt="Title_image"
-              src="./bullet1.png"
-            ></img> */}
             Contact Details{" "}
             <span>(Enter Company's Contact Person Details)</span>
           </p>
@@ -514,7 +505,7 @@ const DetailsForm = (props) => {
             ]}
           >
             <Input addonBefore={prefixSelector} maxLength={10} />
-          </Form.Item>
+          </Form.Item> */}
 
           <Form.Item {...tailFormItemLayout} style={{ marginTop: "2.5rem" }}>
             <Button type="primary" htmlType="submit">
