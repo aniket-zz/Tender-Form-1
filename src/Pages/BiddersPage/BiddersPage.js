@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Space, Button, Form, Alert, Table, ConfigProvider } from "antd";
-// import { BidderList } from "./Dummy";
 import { useNavigate } from "react-router-dom";
-// import EachBidder from "./EachBidder";
 import customFetch from "../../utils/axios";
 const { Column, ColumnGroup } = Table;
 
@@ -11,9 +9,8 @@ const BiddersPage = (props) => {
   const usrToken = localStorage.getItem("token");
 
   const [detail, setDetails] = useState({ tenderType: "cmc", nit: {} });
-  const [status, setStatus] = useState(1);
+  const [status, setStatus] = useState(1); // * 0 -> Processed; * 1 -> Not Processed
   const [BidderList, setBidderList] = useState([]);
-
 
   const onFinish = async (values) => {
     console.log(values);
@@ -29,11 +26,7 @@ const BiddersPage = (props) => {
     detail.tenderType === "cmc" ? navigate("/cmc") : navigate("/civil");
   };
 
-  // function NextPage(index) {
-  //   props.setIndex(index)
-  //   console.log("Executed!");
-  // }
-
+  // Catching the NIT document info from the first bidder's extracted details
   useEffect(
     () => {
       const getDetails = async () => {
@@ -45,8 +38,8 @@ const BiddersPage = (props) => {
           });
           console.log(resp);
           const list = resp.data.bidder_list;
-          
           setBidderList(list);
+
           if (list[0].status === "0") {
             const detail = JSON.parse(list[0]?.details);
             const report = JSON.parse(list[0]?.output);
@@ -107,10 +100,7 @@ const BiddersPage = (props) => {
       ]
     : [];
 
-  // ------------------Bidders List---------------------------
-
-  // const link = detail.tenderType === "cmc" ? "/cmc" : "/civil";
-    
+  // ------------------Bidders List--------------------------    
   
   const bidder_data = BidderList.map((each, index) => {
     const {companyName, BidderRefNo} = JSON.parse(each.details);
@@ -196,12 +186,6 @@ const BiddersPage = (props) => {
         >
           Bidders List
         </p>
-
-        {/* <EachBidder
-          bidderList={BidderList}
-          tenderType={detail.tenderType}
-          passIndex={NextPage}
-        /> */}
 
         <ConfigProvider
           theme={{

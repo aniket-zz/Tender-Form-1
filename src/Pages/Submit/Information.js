@@ -46,7 +46,8 @@ const CIVILdata = {
   nit_desc: {
     "Cost of Work": 112581530.5,
     "Period of Completion (Days)": 1975,
-    "Work Description": "Construction of black top road from Tikilipada to Barpali Railway station alongside railway line under CSR scheme of Basundhara Area",
+    "Work Description":
+      "Construction of black top road from Tikilipada to Barpali Railway station alongside railway line under CSR scheme of Basundhara Area",
     "Bid Start Date": "24-Jan-2021",
     "Bid End Date": "11-Feb-2021",
     "Tender Publication Data": "23-Jan-2021",
@@ -56,14 +57,13 @@ const CIVILdata = {
   gstin: ["22AAPFA5390N1Z1"],
   legal: {
     JV: true,
-    name: "GODAWARI DEIFY SCMPL JV",
-    "formation date": "23/12/2020",
+    name: "M/S Aditya Construction",
+    "formation date": "23/12/2008",
     partners: {
-      "Godawari Natural Resources Private Limited,": 0.45,
-      "Deify Infrastructures Limited,": 0.25,
-      "Square Cargo Movers Private Limited.": 0.5,
+      "M/S Aditya Construction": 0.3,
+      "M/S ROR Commerce Pct. Ltd.": 0.33,
     },
-    lead: "Square Cargo Movers Private Limited.",
+    lead: "M/S ROR Commerce Pct. Ltd.",
   },
   udin: "20401781AAAACG1267",
   company_audited: "M/s Aaditya Construction",
@@ -80,37 +80,49 @@ const CIVILdata = {
 export default CMCdata;
 export { CIVILdata };
 
-// const CIVILdata = {
-//   ca: {
-//     date_issued: "28/12/2020",
-//     ca_name: "V.A. & Associates",
-//     udin: "20401781AAAACG1267",
-//     company_audited: "M/s Aaditya Construction",
-//     type_of_work: "Civil Work",
-//     relevent_work_experience: [
-//       { "Financial Year": "2016-2017", "Gross Turn Over": 17429273900.0 },
-//       { "Financial Year": "2017-2018", "Gross Turn Over": 160940092.0 },
-//       { "Financial Year": "2018-2019", "Gross Turn Over": 20304538600.0 },
-//       { "Financial Year": "2019-2020", "Gross Turn Over": 170954252.0 },
-//     ],
-//   },
-//   nit_desc: {
-//     "Cost of Work": 112581530.5,
-//     "Period of Completion (Days)": 1975,
-//     "Work Description":
-//       "Construction  of  black top road from Tikilipada to Barpali Railway station alongside railway line under CSR scheme of Basundhara Area",
-//     "Bid Start Date": "24-Jan-2021",
-//     "Bid End Date": "11-Feb-2021",
-//     "Tender Publication Data": "23-Jan-2021",
-//   },
-//   gst: "22AAPFA5390N1Z1",
-//   pan: "AAPFA5390N",
-//   powe_of_attorney: { name: "Mr. Arun Verma", match: 97.6 },
-//   legal: {
-//     JV: false,
-//     name: "M/S Aaditya Construction",
-//     "formation date": "23-10-2008.",
-//     partners: { "M/S Aaditya Construction": 1 },
-//     lead: "M/S Aaditya Construction",
-//   },
-// };
+const CIVIL = {
+  nit_desc: {
+    "Cost of Work": 112581530.5,
+    "Period of Completion (Days)": 1975,
+    "Work Description":
+      "Construction  of  black top road from Tikilipada to Barpali Railway station alongside railway line under CSR scheme of Basundhara Area",
+    "Bid Start Date": "24-Jan-2021",
+    "Bid End Date": "11-Feb-2021",
+    "Tender Publication Data": "23-Jan-2021",
+  },
+  ca_name: "V.A. & Associates",
+  pan: ["AAPFA5810N"],
+  gstin: ["22AAPFA5390N1Z1"],
+  legal: {
+    JV: true,
+    name: "M/S Aaditya Construction",
+    "formation date": "23/10/2008",
+    partners: {
+      "M/S Aaditya Construction": 0.3,
+      "M/s ROR Commerce Pvt. Ltd.": 0.33,
+    },
+    lead: "M/s ROR Commerce Pvt. Ltd.",
+  },
+  udin: "20401781AAAACG1267",
+  company_audited: "M/s Aaditya Construction",
+  type_of_work: "Civil Work",
+  relevent_work_experience: [
+    {
+      "Financial Year": "2016-2017",
+      "Gross Turn Over": 17429273900,
+    },
+    {
+      "Financial Year": "2017-2018",
+      "Gross Turn Over": 160940092,
+    },
+    {
+      "Financial Year": "2018-2019",
+      "Gross Turn Over": 20304538600,
+    },
+    {
+      "Financial Year": "2019-2020",
+      "Gross Turn Over": 170954252,
+    },
+  ],
+  local_content: "Class 1 Supplier",
+};

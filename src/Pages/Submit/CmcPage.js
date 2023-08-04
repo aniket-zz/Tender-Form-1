@@ -115,74 +115,9 @@ const CMCPage = (props) => {
         },
         {
           key: 2,
-          detail: "Company Name / Licence Holder Name",
+          detail: "Company/Licence Holder Name",
           value: details?.companyName,
-        },
-        {
-          key: 3,
-          detail: "Registration Number",
-          value: details?.RegistrationNumber,
-        },
-        {
-          key: 4,
-          detail: "Registered Address",
-          value: details?.RegisteredAddress,
-        },
-        {
-          key: 5,
-          detail: "Name of Partners / Directors",
-          value: details?.NameOfPartners,
-        },
-        {
-          key: 6,
-          detail: "City",
-          value: details?.City,
-        },
-        {
-          key: 7,
-          detail: "Postal Code",
-          value: details?.PostalCode,
-        },
-        {
-          key: 8,
-          detail: "PAN Number",
-          value: details?.PANNumber,
-        },
-        {
-          key: 9,
-          detail: "Establishment year",
-          value: details?.EstablishmentYear,
-        },
-        {
-          key: 10,
-          detail: "Nature of Business",
-          value: details?.NatureOfBusiness,
-        },
-        {
-          key: 11,
-          detail: "Legal Status",
-          value: details?.LegalStatus,
-        },
-        {
-          key: 12,
-          detail: "Contact Name",
-          value: details?.Title + " " + details?.ContactName,
-        },
-        {
-          key: 13,
-          detail: "DOB (YYYY-MM-DD)",
-          value: details?.DOB?.substring(0, 10),
-        },
-        {
-          key: 14,
-          detail: "Designation",
-          value: details?.Designation,
-        },
-        {
-          key: 15,
-          detail: "Phone",
-          value: details?.prefix + "  " + details?.phone,
-        },
+        }
       ]
     : [];
 
@@ -205,7 +140,7 @@ const CMCPage = (props) => {
           dataIndex: "name",
           key: "name",
           onCell: (_, index) => ({
-            colSpan: (index === 2 ||index === 8) ? 2 : 1,
+            colSpan: (index === 2 ) ? 2 : 1,
             className: index === 2 ? "detailValue" : "DetailsClass",
           }),
         },
@@ -216,7 +151,7 @@ const CMCPage = (props) => {
           key: "value",
           className: "tableValues",
           onCell: (_, index) => ({
-            colSpan: (index === 2 ||index === 8) ? 0 : 1,
+            colSpan: (index === 2) ? 0 : 1,
           }),
         },
       ],
@@ -252,19 +187,9 @@ const CMCPage = (props) => {
           },
           {
             name: "Joint Venture Formation date",
-            // value: CMCdata.JointVenture.formationDate,
             value: Legal["formation date"],
             key: "formationDate",
           },
-          {
-            name: "Name of the Joint Venture reamined same throughout the document.",
-            key: "nameofJV"
-          },
-          // {
-          //   name: "PAN Number",
-          //   key: "PANnumber",
-          //   value: reports? reports.pan : CMCda
-          // },
           {
             name: "GSTIN Number",
             key: "GSTINnumber",
@@ -533,7 +458,7 @@ const CMCPage = (props) => {
       key: 3
     },
     {
-      query: "For a JV, each partner have a partnership share of greater than or equal to 20%",
+      query: "For the JV, each partner have a partnership share of greater than or equal to 20%",
       status: "NO",
       key: 4
     }
@@ -547,7 +472,6 @@ const CMCPage = (props) => {
   const meanTurnover = reports.workcap
     ? reports?.workcap["Working Capital"]
     : 0;
-
 
   // //--------Joint venture------------
   const numOfBidders = Legal?.partners

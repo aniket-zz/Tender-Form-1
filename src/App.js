@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
-// import {Routee} from './Routes';
 import LoginForm from "./Pages/Login/LoginForm";
 import DetailsForm from "./Pages/DetailsForm/DetailsForm";
 import UploadForm from "./Pages/UploadForm/UploadForm";

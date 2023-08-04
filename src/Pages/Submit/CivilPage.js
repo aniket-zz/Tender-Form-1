@@ -9,7 +9,7 @@ import { Table, ConfigProvider } from "antd";
 const CIVILPage = (props) => {
   const navigate = useNavigate();
   const usrToken = localStorage.getItem("token");
-  /**
+  /*
    * 0 indicates that bid is processed
    * 1 indicates bid is currenntly processing
    */
@@ -109,75 +109,15 @@ const CIVILPage = (props) => {
           value: details?.TenderType,
         },
         {
+          key: "refNo",
+          detail: "Bidder Reference Number",
+          value: details?.BidderRefNo,
+        },
+        {
           key: 2,
-          detail: "Company Name / Licence Holder Name",
+          detail: "Company/Licence Holder Name",
           value: details?.companyName,
-        },
-        {
-          key: 3,
-          detail: "Registration Number",
-          value: details?.RegistrationNumber,
-        },
-        {
-          key: 4,
-          detail: "Registered Address",
-          value: details?.RegisteredAddress,
-        },
-        {
-          key: 5,
-          detail: "Name of Partners / Directors",
-          value: details?.NameOfPartners,
-        },
-        {
-          key: 6,
-          detail: "City",
-          value: details?.City,
-        },
-        {
-          key: 7,
-          detail: "Postal Code",
-          value: details?.PostalCode,
-        },
-        {
-          key: 8,
-          detail: "PAN Number",
-          value: details?.PANNumber,
-        },
-        {
-          key: 9,
-          detail: "Establishment year",
-          value: details?.EstablishmentYear,
-        },
-        {
-          key: 10,
-          detail: "Nature of Business",
-          value: details?.NatureOfBusiness,
-        },
-        {
-          key: 11,
-          detail: "Legal Status",
-          value: details?.LegalStatus,
-        },
-        {
-          key: 12,
-          detail: "Contact Name",
-          value: details?.Title + " " + details?.ContactName,
-        },
-        {
-          key: 13,
-          detail: "DOB (YYYY-MM-DD)",
-          value: details?.DOB?.substring(0, 10),
-        },
-        {
-          key: 14,
-          detail: "Designation",
-          value: details?.Designation,
-        },
-        {
-          key: 15,
-          detail: "Phone",
-          value: details?.prefix + "  " + details?.phone,
-        },
+        }
       ]
     : [];
   //--------------------------------Report----------------------------------
@@ -199,7 +139,7 @@ const CIVILPage = (props) => {
           dataIndex: "name",
           key: "name",
           onCell: (_, index) => ({
-            colSpan: (index === 2 ||index === 8) ? 2 : 1,
+            colSpan: (index === 2) ? 2 : 1,
             className: index === 2 ? "detailValue" : "DetailsClass",
           }),
         },
@@ -210,7 +150,7 @@ const CIVILPage = (props) => {
           key: "value",
           className: "tableValues",
           onCell: (_, index) => ({
-            colSpan: (index === 2 ||index === 8) ? 0 : 1,
+            colSpan: (index === 2) ? 0 : 1,
           }),
         },
       ],
@@ -248,13 +188,8 @@ const CIVILPage = (props) => {
           },
           {
             name: "Joint Venture Formation date",
-            // value: CMCdata.JointVenture.formationDate,
             value: Legal["formation date"],
             key: "formationDate",
-          },
-          {
-            name: "Name of the Joint Venture reamined same throughout the document.",
-            key: "nameofJV"
           },
           {
             name: "PAN Number",
@@ -285,12 +220,12 @@ const CIVILPage = (props) => {
   
 
   // Catch the CA from the output
+  
   const CA = reports.ca_name ? {
         udin: reports.udin,
         ca_name: reports.ca_name,
         companyAudited: reports.company_audited,
         workType: reports.type_of_work,
-        // dateIssued: CIVILdata.?date_issued,
         relevantWorkExperience: reports.relevent_work_experience,
       } : undefined
 
