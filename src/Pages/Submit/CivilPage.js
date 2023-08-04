@@ -140,7 +140,7 @@ const CIVILPage = (props) => {
           key: "name",
           onCell: (_, index) => ({
             colSpan: (index === 2) ? 2 : 1,
-            className: index === 2 ? "detailValue" : "DetailsClass",
+            className: "DetailsClass",
           }),
         },
         
@@ -179,7 +179,7 @@ const CIVILPage = (props) => {
           ...Object.entries(Legal?.partners).map(([key, val], index) => ({
             key: index,
             name: key,
-            value: index === 1 ? val * 100 - 20 + "%" : val * 100 + "%",
+            value:  val * 100 + "%",
           })),
           {
             key: "lead",
@@ -220,7 +220,7 @@ const CIVILPage = (props) => {
   
 
   // Catch the CA from the output
-  
+
   const CA = reports.ca_name ? {
         udin: reports.udin,
         ca_name: reports.ca_name,
@@ -236,17 +236,19 @@ const CIVILPage = (props) => {
       className: "tableHeading",
       children: [
         {
-          title: "Name",
+          title: "DETAIL",
           dataIndex: "name",
           key: "name",
+          className: "DetailsClass",
           onCell: (_, index) => ({
             colSpan: index === 4 ? 2 : 1,
           }),
         },
         {
-          title: "Value",
+          title: "VALUE",
           dataIndex: "value",
           key: "value",
+          className: "tableValues",
           onCell: (_, index) => ({
             colSpan: index === 4 ? 0 : 1,
           }),
@@ -547,7 +549,7 @@ const CIVILPage = (props) => {
     },
     {
       query: "For a JV, each partner have a partnership share of greater than or equal to 20%",
-      status: "NO",
+      status: "YES",
       key: 4
     }
   ];
@@ -730,15 +732,12 @@ const CIVILPage = (props) => {
           onFinishFailed={onFinishFailed}
           autoComplete="off"
         >
-          {/* {status === "0" ? (
-            Check()
-          ) : (
+          {status === "0" ? 
             <Alert
               message="Bid Under Review!"
               description="Your bid is under evaluation."
-              type="info"
-            />
-          )} */}
+              type="info" /> : 
+            null}
 
           <Button
             style={{ margin: "20px 0px 10px 0px" }}

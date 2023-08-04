@@ -47,44 +47,6 @@ const CIVILdata = {
     "Cost of Work": 112581530.5,
     "Period of Completion (Days)": 1975,
     "Work Description":
-      "Construction of black top road from Tikilipada to Barpali Railway station alongside railway line under CSR scheme of Basundhara Area",
-    "Bid Start Date": "24-Jan-2021",
-    "Bid End Date": "11-Feb-2021",
-    "Tender Publication Data": "23-Jan-2021",
-  },
-  ca_name: "V.A. & Associates",
-  pan: ["AAPFA5810N"],
-  gstin: ["22AAPFA5390N1Z1"],
-  legal: {
-    JV: true,
-    name: "M/S Aditya Construction",
-    "formation date": "23/12/2008",
-    partners: {
-      "M/S Aditya Construction": 0.3,
-      "M/S ROR Commerce Pct. Ltd.": 0.33,
-    },
-    lead: "M/S ROR Commerce Pct. Ltd.",
-  },
-  udin: "20401781AAAACG1267",
-  company_audited: "M/s Aaditya Construction",
-  type_of_work: "Civil Work",
-  relevent_work_experience: [
-    { "Financial Year": "2016-2017", "Gross Turn Over": 17429273900.0 },
-    { "Financial Year": "2017-2018", "Gross Turn Over": 160940092.0 },
-    { "Financial Year": "2018-2019", "Gross Turn Over": 20304538600.0 },
-    { "Financial Year": "2019-2020", "Gross Turn Over": 170954252.0 },
-  ],
-  local_content: "Class 1 Supplier",
-};
-
-export default CMCdata;
-export { CIVILdata };
-
-const CIVIL = {
-  nit_desc: {
-    "Cost of Work": 112581530.5,
-    "Period of Completion (Days)": 1975,
-    "Work Description":
       "Construction  of  black top road from Tikilipada to Barpali Railway station alongside railway line under CSR scheme of Basundhara Area",
     "Bid Start Date": "24-Jan-2021",
     "Bid End Date": "11-Feb-2021",
@@ -126,3 +88,6 @@ const CIVIL = {
   ],
   local_content: "Class 1 Supplier",
 };
+
+export default CMCdata;
+export { CIVILdata };
