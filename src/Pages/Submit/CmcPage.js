@@ -408,7 +408,7 @@ const CMCPage = (props) => {
     {
       key: 1,
       details: "Relatives",
-      value: reports.undertaking["any relatives"]
+      value: reports.undertaking["any relatives"]?"Yes":"No Relatives in MCL"
     },
     {
       key: 2,
