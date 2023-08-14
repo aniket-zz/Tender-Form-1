@@ -1,6 +1,6 @@
 body {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
-    background-color: rgb(105, 105, 105);
+    background-color: rgb(255, 255, 255);
 }
 
 h3 {
@@ -23,9 +23,11 @@ textarea {
 
 #root {
     padding: 0px 0px 25px 0px;
-    width: 50rem;
+    width: 55rem;
     margin: auto;
     background-color: white;
+    border: 1px solid rgb(231, 230, 230);
+    /* box-shadow: 10px #C9C9C9 ; */
 }
 
 #register, #basic, #Upload {

@@ -132,7 +132,7 @@ const BiddersPage = (props) => {
         style={{
           fontFamily: "verdana",
           fontSize: "1rem",
-          padding: "0rem 5rem",
+          padding: "0rem 7.5rem",
         }}
       >
         NIT Document Information
