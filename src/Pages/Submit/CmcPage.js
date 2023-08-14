@@ -408,12 +408,12 @@ const CMCPage = (props) => {
     {
       key: 1,
       details: "Relatives",
-      value: CMCdata.realtives
+      value: reports.undertaking["any relatives"]
     },
     {
       key: 2,
       details: "Undertaking",
-      value: "Undertaking matches with accuracy of " + Math.floor(reports.undertaking * 10000) / 100 + " %",
+      value: "Undertaking matches with accuracy of " + Math.floor(reports.undertaking.similarity * 10000) / 100 + " %",
     },
    ]: [];
 
